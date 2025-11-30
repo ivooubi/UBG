@@ -51,23 +51,28 @@
 
     .games-grid {
       display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-      gap: 25px;
+      grid-template-columns: repeat(2, 1fr); /* 2 columnas */
+      grid-template-rows: repeat(2, 1fr); /* 2 filas */
+      gap: 30px;
       width: 100%;
-      max-width: 1300px;
-      margin-top: 40px;
+      max-width: 1400px;
+      margin-top: 50px;
       z-index: 10;
     }
 
     .card {
       background: rgba(255, 255, 255, 0.12);   /* menos transparente */
       border: 1px solid rgba(255, 255, 255, 0.2);
-      border-radius: 16px;
-      padding: 24px 18px;
+      border-radius: 20px;
+      padding: 40px 30px; /* Más grandes */
       text-align: center;
       cursor: pointer;
       transition: all 0.35s ease;
       backdrop-filter: blur(8px);
+      height: 100%; /* Para que ocupen el espacio uniforme */
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
     }
 
     .card:hover {
@@ -77,13 +82,13 @@
     }
 
     .card h3 {
-      font-size: 1.4rem;
+      font-size: 1.8rem; /* Más grande */
       font-weight: 700;
-      margin-bottom: 10px;
+      margin-bottom: 15px;
     }
 
     .card p {
-      font-size: 0.95rem;
+      font-size: 1.1rem; /* Más grande */
       opacity: 0.8;
     }
 
@@ -162,8 +167,14 @@
     }
 
     @media (max-width: 768px) {
+      .games-grid {
+        grid-template-columns: 1fr; /* 1 columna en móvil */
+        grid-template-rows: repeat(4, 1fr);
+      }
       h1 { font-size: 16vw; }
-      .games-grid { grid-template-columns: 1fr; }
+      .card { padding: 30px 20px; }
+      .card h3 { font-size: 1.5rem; }
+      .card p { font-size: 1rem; }
       .modal-controls { padding: 0 15px; }
       .btn-close, .btn-fullscreen { font-size: 0.9rem; padding: 10px 16px; }
     }
@@ -181,14 +192,14 @@
       <p>Más de 250 juegos gratis</p>
     </div>
 
-    <div class="card" onclick="openModal('https://www.msn.com/en-us/play/games/space-waves/cg-9nm5764dbppg?cgfrom=cg_landing_home_recommended', 'Space Waves')">
-      <h3>Space Waves</h3>
+    <div class="card" onclick="openModal('https://www.msn.com/en-us/play', 'MSN Games')">
+      <h3>MSN Games</h3>
       <p>Arcade espacial de alta velocidad</p>
     </div>
 
-    <div class="card" onclick="openModal('https://www.youtube.com', 'YouTube')">
-      <h3>YouTube</h3>
-      <p>Videos y streaming ilimitado</p>
+    <div class="card" onclick="openModal('https://faf-games.github.io/', 'FAF Games')">
+      <h3>FAF Games</h3>
+      <p>Juegos no bloqueados variados y entretenidos</p>
     </div>
 
     <div class="card" onclick="openModal('https://www.elimpostorx.com/', 'El Impostor')">
