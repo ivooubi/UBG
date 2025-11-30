@@ -10,21 +10,23 @@
   <style>
     * { margin: 0; padding: 0; box-sizing: border-box; }
     
-    html, body {
+    body {
       font-family: 'Montserrat', sans-serif;
       background: #000;
       color: #fff;
       min-height: 100vh;
-      overflow-y: auto; /* Permite scroll */
+      overflow-y: auto;
     }
 
-    canvas#particles { 
-      position: fixed; 
-      top: 0; left: 0; 
-      width: 100%; height: 100%; 
-      z-index: 1; 
+    /* Fondo de partículas fijo */
+    canvas#particles {
+      position: fixed;
+      top: 0; left: 0;
+      width: 100%; height: 100%;
+      z-index: 1;
     }
 
+    /* Reloj FIJO arriba (nunca baja al hacer scroll) */
     .clock {
       position: fixed;
       top: 20px;
@@ -32,7 +34,7 @@
       font-size: 2.2rem;
       font-weight: 900;
       letter-spacing: 3px;
-      z-index: 20;
+      z-index: 30;
       color: #fff;
     }
 
@@ -47,19 +49,17 @@
       -webkit-text-fill-color: transparent;
       animation: shine 4s ease-in-out infinite;
       text-shadow: 0 0 30px rgba(255,255,255,0.5);
-      z-index: 10;
-      cursor: pointer;
-      transition: all 0.4s ease;
-      user-select: none;
       text-align: center;
-      margin: 40px 0;
+      margin: 100px 0 50px;
+      cursor: pointer;
+      user-select: none;
+      z-index: 10;
     }
 
-    h1:hover { transform: scale(1.12); text-shadow: 0 0 60px rgba(255,255,255,0.9); }
+    h1:hover { transform: scale(1.12); }
 
     @keyframes shine { 0%,100%{background-position:0% 50%} 50%{background-position:100% 50%} }
 
-    /* Contenedor principal con scroll */
     .container {
       position: relative;
       z-index: 10;
@@ -67,10 +67,8 @@
       display: flex;
       flex-direction: column;
       align-items: center;
-      min-height: 100vh;
     }
 
-    /* Grilla principal: 2 columnas + tarjetas centradas abajo */
     .games-grid {
       display: grid;
       grid-template-columns: repeat(auto-fit, minmax(340px, 1fr));
@@ -81,6 +79,7 @@
     }
 
     .card, .add-card {
+      position: relative;
       background: rgba(255,255,255,0.12);
       border: 1px solid rgba(255,255,255,0.2);
       border-radius: 20px;
@@ -89,10 +88,10 @@
       cursor: pointer;
       transition: all 0.35s ease;
       backdrop-filter: blur(8px);
+      min-height: 180px;
       display: flex;
       flex-direction: column;
       justify-content: center;
-      min-height: 180px;
     }
 
     .card:hover, .add-card:hover {
@@ -110,47 +109,62 @@
     .card h3 { font-size: 1.8rem; font-weight: 700; margin-bottom: 15px; }
     .card p { font-size: 1.1rem; opacity: 0.8; }
 
-    /* Tarjetas personalizadas centradas en su propia fila */
-    .custom-row {
+    /* Papelera solo en tarjetas personalizadas */
+    .delete-btn {
+      position: absolute;
+      top: 14px;
+      right: 14px;
+      width: 38px;
+      height: 38px;
+      background: rgba(255,50,50,0.15);
+      border: 1px solid rgba(255,80,80,0.3);
+      border-radius: 50%;
       display: flex;
+      align-items: center;
       justify-content: center;
-      width: 100%;
-      margin: 20px 0;
+      opacity: 0;
+      transition: all 0.3s ease;
+      cursor: pointer;
     }
 
-    /* Modal juego */
-    #gameModal {
+    .card:hover .delete-btn { opacity: 1; }
+    .delete-btn:hover { background: rgba(255,50,50,0.4); transform: scale(1.15); }
+    .delete-btn svg { width: 18px; height: 18px; fill: #ff6666; }
+
+    @keyframes popOut {
+      0% { transform: scale(1) translateY(0); opacity: 1; }
+      60% { transform: scale(1.2) translateY(-30px); opacity: 0.7; }
+      100% { transform: scale(0) translateY(400px); opacity: 0; }
+    }
+    .removing { animation: popOut 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards; }
+
+    /* Modales */
+    #gameModal, #addModal {
       display: none;
       position: fixed;
       top: 0; left: 0;
       width: 100%; height: 100%;
       background: rgba(0,0,0,0.96);
       z-index: 100;
-      padding: 30px;
     }
-
+    #gameModal { padding: 30px; z-index: 200; }
     .modal-content {
       position: relative;
-      width: 100%;
-      height: 100%;
+      width: 100%; height: 100%;
       background: #000;
       border: 3px solid #222;
       border-radius: 20px;
       overflow: hidden;
     }
-
     .modal iframe {
       width: 100%;
       height: calc(100% - 80px);
       border: none;
       margin-top: 80px;
     }
-
     .modal-controls {
       position: absolute;
-      top: 0;
-      width: 100%;
-      height: 80px;
+      top: 0; width: 100%; height: 80px;
       background: rgba(0,0,0,0.8);
       display: flex;
       justify-content: space-between;
@@ -158,7 +172,6 @@
       padding: 0 30px;
       z-index: 10;
     }
-
     .btn-close, .btn-fullscreen {
       padding: 10px 24px;
       border-radius: 30px;
@@ -167,24 +180,10 @@
       cursor: pointer;
       transition: 0.3s;
     }
-
     .btn-close { background: #ff3333; color: white; }
-    .btn-close:hover { background: #ff5555; transform: scale(1.05); }
     .btn-fullscreen { background: white; color: black; }
-    .btn-fullscreen:hover { background: #f0f0f0; transform: scale(1.05); }
 
-    /* Modal añadir con animación POP */
-    #addModal {
-      display: none;
-      position: fixed;
-      top: 0; left: 0;
-      width: 100%; height: 100%;
-      background: rgba(0,0,0,0.92);
-      z-index: 200;
-      align-items: center;
-      justify-content: center;
-    }
-
+    #addModal { align-items: center; justify-content: center; z-index: 300; }
     .pop-box {
       background: #111;
       padding: 40px;
@@ -195,13 +194,11 @@
       text-align: center;
       animation: pop 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
     }
-
     @keyframes pop {
       0% { transform: scale(0.3); opacity: 0; }
       70% { transform: scale(1.1); }
       100% { transform: scale(1); opacity: 1; }
     }
-
     .pop-box input {
       width: 100%;
       padding: 14px;
@@ -213,7 +210,6 @@
       font-family: 'Montserrat', sans-serif;
       font-size: 1rem;
     }
-
     .pop-box button {
       margin-top: 20px;
       padding: 12px 36px;
@@ -225,11 +221,9 @@
       cursor: pointer;
     }
 
-    .pop-box button:hover { background: #00cc70; transform: scale(1.05); }
-
     @media (max-width: 768px) {
       .clock { font-size: 1.8rem; top: 15px; left: 15px; }
-      h1 { font-size: 16vw; }
+      h1 { font-size: 16vw; margin: 80px 0 40px; }
       .games-grid { grid-template-columns: 1fr; }
     }
   </style>
@@ -238,13 +232,14 @@
 
   <canvas id="particles"></canvas>
 
+  <!-- Reloj FIJO -->
   <div class="clock" id="clock">00:00</div>
 
   <h1 onclick="location.reload()">UBG</h1>
 
   <div class="container">
 
-    <!-- 4 tarjetas principales -->
+    <!-- Tarjetas principales -->
     <div class="games-grid">
       <div class="card" onclick="openModal('https://pizzaedition.win/')">
         <h3>The Pizza Edition</h3>
@@ -264,19 +259,18 @@
       </div>
     </div>
 
-    <!-- Tarjeta + Añadir (mismo estilo) -->
+    <!-- Añadir página -->
     <div class="games-grid">
       <div class="add-card" onclick="document.getElementById('addModal').style.display='flex'">
         + Añadir página
       </div>
     </div>
 
-    <!-- Aquí se insertarán las tarjetas personalizadas (centradas) -->
+    <!-- Aquí van las personalizadas -->
     <div id="customGames"></div>
-
   </div>
 
-  <!-- Modal juego grande -->
+  <!-- Modal juego -->
   <div id="gameModal">
     <div class="modal-content">
       <div class="modal-controls">
@@ -287,69 +281,26 @@
     </div>
   </div>
 
-  <!-- Modal añadir página -->
+  <!-- Modal añadir -->
   <div id="addModal">
     <div class="pop-box">
       <h2 style="margin-bottom:20px; color:#00ff88">+ Añadir página</h2>
-      <input type="url" id="newUrl" placeholder="Insertar URL" required>
-      <input type="text" id="newName" placeholder="Insertar nombre" required>
+      <input type="url" id="newUrl" placeholder="Insertar URL (ej: https://...)">
+      <input type="text" id="newName" placeholder="Nombre del juego">
       <button onclick="addNewGame()">Añadir</button>
     </div>
   </div>
 
   <script>
-    // Reloj 24h
+    // Reloj fijo
     function updateClock() {
       const now = new Date();
       const h = String(now.getHours()).padStart(2,'0');
       const m = String(now.getMinutes()).padStart(2,'0');
-      document.getElementById('clock').textContent = `${h}:${m}`;
+      document.getId('clock').textContent = `${h}:${m}`;
     }
     updateClock();
     setInterval(updateClock, 1000);
-
-    // Cargar juegos guardados
-    const savedGames = JSON.parse(localStorage.getItem('ubg_custom_games') || '[]');
-    const customContainer = document.getElementById('customGames');
-
-    savedGames.forEach(game => addCustomCard(game.url, game.name));
-
-    function addCustomCard(url, name) {
-      const row = document.createElement('div');
-      row.className = 'games-grid';
-      row.innerHTML = `
-        <div class="card" onclick="openModal('${url}')">
-          <h3>${name}</h3>
-          <p>Juego personalizado</p>
-        </div>
-      `;
-      customContainer.appendChild(row);
-    }
-
-    function addNewGame() {
-      let url = document.getElementById('newUrl').value.trim();
-      const name = document.getElementById('newName').value.trim();
-
-      if (!url || !name) return alert('¡Rellena ambos campos!');
-      if (!url.startsWith('https://') && !url.startsWith('http://')) {
-        url = 'https://' + url;
-      }
-
-      addCustomCard(url, name);
-
-      savedGames.push({url, name});
-      localStorage.setItem('ubg_custom_games', JSON.stringify(savedGames));
-
-      document.getElementById('addModal').style.display = 'none';
-      document.getElementById('newUrl').value = '';
-      document.getElementById('newName').value = '';
-    }
-
-    // Cerrar modales
-    document.getElementById('addModal').addEventListener('click', e => {
-      if (e.target === document.getElementById('addModal')) 
-        document.getElementById('addModal').style.display = 'none';
-    });
 
     // Partículas
     const canvas = document.getElementById('particles');
@@ -357,16 +308,13 @@
     canvas.width = innerWidth; canvas.height = innerHeight;
     window.addEventListener('resize', () => { canvas.width = innerWidth; canvas.height = innerHeight; });
 
-    const particles = [];
-    for(let i = 0; i < 130; i++) {
-      particles.push({
-        x: Math.random() * canvas.width,
-        y: Math.random() * canvas.height,
-        size: Math.random() * 3.5 + 1,
-        speedY: Math.random() * 1.3 + 0.4,
-        speedX: Math.random() * 0.6 - 0.3
-      });
-    }
+    const particles = Array.from({length: 130}, () => ({
+      x: Math.random() * canvas.width,
+      y: Math.random() * canvas.height,
+      size: Math.random() * 3.5 + 1,
+      speedY: Math.random() * 1.3 + 0.4,
+      speedX: Math.random() * 0.6 - 0.3
+    }));
 
     function animate() {
       ctx.clearRect(0,0,canvas.width,canvas.height);
@@ -380,7 +328,57 @@
     }
     animate();
 
-    // Modal juego
+    // Icono papelera
+    const trashSVG = `<svg viewBox="0 0 24 24"><path d="M19 4h-3.5l-1-1h-5l-1 1H5v2h14M6 19a2 2 0 0 0 2 2h8a2 2 0 0 0 2-2V7H6v12z"/></svg>`;
+
+    // Juegos guardados
+    let savedGames = JSON.parse(localStorage.getItem('ubg_custom_games') || '[]');
+    const customContainer = document.getElementById('customGames');
+
+    function renderGames() {
+      customContainer.innerHTML = '';
+      savedGames.forEach((game, i) => {
+        const row = document.createElement('div');
+        row.className = 'games-grid';
+        row.innerHTML = `
+          <div class="card" onclick="openModal('${game.url}')">
+            <div class="delete-btn" onclick="deleteGame(${i}, event)">${trashSVG}</div>
+            <h3>${game.name}</h3>
+            <p>Juego personalizado</p>
+          </div>
+        `;
+        customContainer.appendChild(row);
+      });
+    }
+    renderGames();
+
+    function addNewGame() {
+      let url = document.getElementById('newUrl').value.trim();
+      const name = document.getElementById('newName').value.trim();
+
+      if (!url || !name) return alert('¡Completa ambos campos!');
+      if (!/^https?:\/\//i.test(url)) url = 'https://' + url;
+
+      savedGames.push({url, name});
+      localStorage.setItem('ubg_custom_games', JSON.stringify(savedGames));
+      renderGames();
+
+      document.getElementById('addModal').style.display = 'none';
+      document.getElementById('newUrl').value = '';
+      document.getElementById('newName').value = '';
+    }
+
+    function deleteGame(i, e) {
+      e.stopPropagation();
+      const card = e.target.closest('.card');
+      card.classList.add('removing');
+      setTimeout(() => {
+        savedGames.splice(i, 1);
+        localStorage.setItem('ubg_custom_games', JSON.stringify(savedGames));
+        renderGames();
+      }, 600);
+    }
+
     function openModal(url) {
       document.getElementById('gameIframe').src = url;
       document.getElementById('gameModal').style.display = 'block';
@@ -397,6 +395,9 @@
     }
 
     document.addEventListener('keydown', e => { if(e.key === 'Escape') closeModal(); });
+    document.getElementById('addModal').addEventListener('click', e => {
+      if (e.target === document.getElementById('addModal')) document.getElementById('addModal').style.display = 'none';
+    });
   </script>
 </body>
 </html>
