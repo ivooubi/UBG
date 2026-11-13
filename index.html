@@ -1,403 +1,832 @@
 <!DOCTYPE html>
 <html lang="es">
+
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>UBG - Juegos</title>
-  
-  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;800;900&display=swap" rel="stylesheet">
-  
-  <style>
-    * { margin: 0; padding: 0; box-sizing: border-box; }
-    
-    body {
-      font-family: 'Montserrat', sans-serif;
-      background: #000;
-      color: #fff;
-      min-height: 100vh;
-      overflow-y: auto;
-    }
+    <script>
+        (function (w, d, s, l, i) {
+            w[l] = w[l] || [];
+            w[l].push({ 'gtm.start': new Date().getTime(), event: 'gtm.js' });
+            var f = d.getElementsByTagName(s)[0],
+                j = d.createElement(s),
+                dl = l != 'dataLayer' ? '&l=' + l : '';
+            j.async = true;
+            j.src = 'https://www.googletagmanager.com/gtm.js?id=' + i + dl;
+            f.parentNode.insertBefore(j, f);
+        })(window, document, 'script', 'dataLayer', 'GTM-TDD57P9N');
+    </script>
+    <script async defer src="https://tools.luckyorange.com/core/lo.js?site-id=40597618"></script>
 
-    /* Fondo de partículas fijo */
-    canvas#particles {
-      position: fixed;
-      top: 0; left: 0;
-      width: 100%; height: 100%;
-      z-index: 1;
-    }
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+    <meta name="color-scheme" content="dark light">
+    <meta name="theme-color" id="theme-color" content="#000000">
+    <title>UBGames.88</title>
+    <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><circle cx='50' cy='50' r='50' fill='%23faff00'/></svg>">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
 
-    /* Reloj FIJO arriba (nunca baja al hacer scroll) */
-    .clock {
-      position: fixed;
-      top: 20px;
-      left: 25px;
-      font-size: 2.2rem;
-      font-weight: 900;
-      letter-spacing: 3px;
-      z-index: 30;
-      color: #fff;
-    }
+    <style>
+        /* ===== Sistema de diseño: minimalista, estilo Apple ===== */
+        :root {
+            color-scheme: dark;
+            --bg-color: #000;
+            --text-color: #f5f5f7;
+            --text-2: #a1a1a6;
+            --card-bg: rgba(255, 255, 255, 0.06);
+            --sidebar-bg: rgba(28, 28, 30, 0.72);
+            --accent-ia: #0a84ff;
+            --danger: #ff453a;
+            --line: rgba(255, 255, 255, 0.1);
+            --line-strong: rgba(255, 255, 255, 0.24);
+            --fill: rgba(120, 120, 128, 0.24);
+            --fill-on: rgba(255, 255, 255, 0.16);
+            --shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
+            --ease-out: cubic-bezier(0.23, 1, 0.32, 1);
+            --ease-drawer: cubic-bezier(0.32, 0.72, 0, 1);
+            --font: -apple-system, BlinkMacSystemFont, "SF Pro Display", "SF Pro Text", "Inter", system-ui, "Segoe UI", Roboto, sans-serif;
+            --safe-t: env(safe-area-inset-top, 0px);
+            --safe-b: env(safe-area-inset-bottom, 0px);
+            --safe-l: env(safe-area-inset-left, 0px);
+            --safe-r: env(safe-area-inset-right, 0px);
+        }
 
-    h1 {
-      font-size: 11vw;
-      font-weight: 900;
-      letter-spacing: 0.15em;
-      text-transform: uppercase;
-      background: linear-gradient(90deg, #fff, #ccc, #fff);
-      -webkit-background-clip: text;
-      background-clip: text;
-      -webkit-text-fill-color: transparent;
-      animation: shine 4s ease-in-out infinite;
-      text-shadow: 0 0 30px rgba(255,255,255,0.5);
-      text-align: center;
-      margin: 100px 0 50px;
-      cursor: pointer;
-      user-select: none;
-      z-index: 10;
-    }
+        body.light-mode {
+            color-scheme: light;
+            --bg-color: #f5f5f7;
+            --text-color: #1d1d1f;
+            --text-2: #6e6e73;
+            --card-bg: rgba(255, 255, 255, 0.72);
+            --sidebar-bg: rgba(255, 255, 255, 0.78);
+            --accent-ia: #0071e3;
+            --danger: #ff3b30;
+            --line: rgba(0, 0, 0, 0.08);
+            --line-strong: rgba(0, 0, 0, 0.2);
+            --fill: rgba(120, 120, 128, 0.14);
+            --fill-on: #fff;
+            --shadow: 0 20px 60px rgba(0, 0, 0, 0.15);
+        }
 
-    h1:hover { transform: scale(1.12); }
+        /* Con un fondo de la tienda (siempre oscuro) se fuerzan los colores oscuros */
+        body.light-mode.has-bg {
+            color-scheme: dark;
+            --text-color: #f5f5f7; --text-2: #a1a1a6; --card-bg: rgba(255, 255, 255, 0.08);
+            --sidebar-bg: rgba(28, 28, 30, 0.72); --accent-ia: #0a84ff; --danger: #ff453a;
+            --line: rgba(255, 255, 255, 0.12); --line-strong: rgba(255, 255, 255, 0.24);
+            --fill: rgba(120, 120, 128, 0.28); --fill-on: rgba(255, 255, 255, 0.18);
+        }
 
-    @keyframes shine { 0%,100%{background-position:0% 50%} 50%{background-position:100% 50%} }
+        html { -webkit-tap-highlight-color: transparent; overscroll-behavior: none; -webkit-text-size-adjust: 100%; text-size-adjust: 100%; }
+        body, html {
+            margin: 0; padding: 0; width: 100%; height: 100%;
+            background-color: var(--bg-color); color: var(--text-color);
+            font-family: var(--font); -webkit-font-smoothing: antialiased; text-rendering: optimizeLegibility;
+            overflow: hidden; transition: background-color 0.4s, color 0.4s;
+        }
+        @supports (height: 100dvh) { body, html { height: 100dvh; } }
 
-    .container {
-      position: relative;
-      z-index: 10;
-      padding: 20px;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-    }
+        button, .game-card, .sidebar-item, .menu-btn { -webkit-user-select: none; user-select: none; touch-action: manipulation; }
+        :focus-visible { outline: 2px solid var(--accent-ia); outline-offset: 2px; }
 
-    .games-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(340px, 1fr));
-      gap: 35px;
-      width: 100%;
-      max-width: 1400px;
-      margin-bottom: 50px;
-    }
+        @keyframes fade { from { opacity: 0; } }
+        @keyframes enter { from { opacity: 0; transform: translateY(8px); } }
+        @keyframes pop { from { opacity: 0; transform: scale(0.96); } }
 
-    .card, .add-card {
-      position: relative;
-      background: rgba(255,255,255,0.12);
-      border: 1px solid rgba(255,255,255,0.2);
-      border-radius: 20px;
-      padding: 40px 30px;
-      text-align: center;
-      cursor: pointer;
-      transition: all 0.35s ease;
-      backdrop-filter: blur(8px);
-      min-height: 180px;
-      display: flex;
-      flex-direction: column;
-      justify-content: center;
-    }
+        /* ===== Pantalla de bloqueo ===== */
+        #lock-screen {
+            position: fixed; inset: 0; background: var(--bg-color); z-index: 9999;
+            display: flex; flex-direction: column; align-items: center; justify-content: center;
+            gap: 14px; padding: 24px; animation: fade 0.5s var(--ease-out);
+        }
+        #lock-screen.hidden { display: none; }
+        .lock-title { margin: 0; font-size: clamp(28px, 6vw, 40px); font-weight: 700; letter-spacing: -0.035em; }
+        .lock-hint { margin: 0 0 8px; color: var(--text-2); font-size: 15px; }
+        #lock-input {
+            width: min(280px, 80vw); box-sizing: border-box; background: var(--fill); border: 0; border-radius: 14px;
+            color: var(--text-color); font: 500 20px var(--font); text-align: center; letter-spacing: 0.3em;
+            padding: 14px 16px; outline: none; text-transform: lowercase; transition: box-shadow 0.2s;
+        }
+        #lock-input:focus { box-shadow: 0 0 0 3px rgba(10, 132, 255, 0.35); }
 
-    .card:hover, .add-card:hover {
-      background: rgba(255,255,255,0.18);
-      transform: translateY(-10px);
-      box-shadow: 0 15px 40px rgba(255,255,255,0.1);
-    }
+        /* ===== Contenido ===== */
+        #main-content { opacity: 0; transition: opacity 0.5s; height: 100%; width: 100%; display: none; }
+        #main-content.visible { opacity: 1; display: block; }
 
-    .add-card {
-      color: #ccc;
-      font-size: 1.6rem;
-      font-weight: 700;
-    }
+        .menu-btn {
+            position: fixed; top: calc(var(--safe-t) + 14px); left: calc(var(--safe-l) + 14px);
+            width: 44px; height: 44px; padding: 15px 13px; box-sizing: border-box; z-index: 1001; cursor: pointer;
+            display: flex; flex-direction: column; justify-content: space-between; border-radius: 50%;
+            background: var(--sidebar-bg); -webkit-backdrop-filter: blur(20px) saturate(180%); backdrop-filter: blur(20px) saturate(180%);
+            border: 1px solid var(--line); transition: transform 0.15s var(--ease-out);
+        }
+        .menu-btn:active { transform: scale(0.94); }
+        .menu-btn .bar { width: 100%; height: 2px; border-radius: 1px; background: var(--text-color); transition: transform 0.35s var(--ease-drawer), opacity 0.2s; }
+        .menu-btn.open .bar:nth-child(1) { transform: translateY(6px) rotate(45deg); }
+        .menu-btn.open .bar:nth-child(2) { opacity: 0; transform: scaleX(0); }
+        .menu-btn.open .bar:nth-child(3) { transform: translateY(-6px) rotate(-45deg); }
 
-    .card h3 { font-size: 1.8rem; font-weight: 700; margin-bottom: 15px; }
-    .card p { font-size: 1.1rem; opacity: 0.8; }
+        .sidebar {
+            position: fixed; top: 0; left: 0; bottom: 0; width: min(300px, 82vw); box-sizing: border-box; z-index: 1000;
+            padding: calc(var(--safe-t) + 76px) 12px 24px calc(var(--safe-l) + 12px);
+            background: var(--sidebar-bg); -webkit-backdrop-filter: blur(30px) saturate(180%); backdrop-filter: blur(30px) saturate(180%);
+            border-right: 1px solid var(--line); overflow-y: auto; overscroll-behavior: contain;
+            transform: translateX(-102%); visibility: hidden;
+            transition: transform 0.34s var(--ease-drawer), visibility 0s 0.34s;
+        }
+        .sidebar.active { transform: translateX(0); visibility: visible; transition-delay: 0s; }
+        #main-content::after {
+            content: ""; position: fixed; inset: 0; z-index: 999; background: rgba(0, 0, 0, 0.4);
+            opacity: 0; pointer-events: none; transition: opacity 0.3s var(--ease-out);
+        }
+        #main-content:has(.sidebar.active)::after { opacity: 1; pointer-events: auto; }
 
-    /* Papelera solo en tarjetas personalizadas */
-    .delete-btn {
-      position: absolute;
-      top: 14px;
-      right: 14px;
-      width: 38px;
-      height: 38px;
-      background: rgba(255,50,50,0.15);
-      border: 1px solid rgba(255,80,80,0.3);
-      border-radius: 50%;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      opacity: 0;
-      transition: all 0.3s ease;
-      cursor: pointer;
-    }
+        .sidebar-item {
+            padding: 12px 16px; margin-bottom: 2px; border-radius: 12px; font-size: 17px; font-weight: 500; letter-spacing: -0.01em;
+            opacity: 0.72; cursor: pointer; overflow-wrap: anywhere; transition: background-color 0.15s, opacity 0.15s;
+        }
+        .sidebar-item:active { background: var(--fill); }
+        .sidebar-item.active { opacity: 1; background: var(--fill); }
+        .sidebar-item.danger { color: var(--danger); opacity: 1; margin-top: 12px; }
+        @media (hover: hover) and (pointer: fine) { .sidebar-item:hover { opacity: 1; background: var(--fill); } }
 
-    .card:hover .delete-btn { opacity: 1; }
-    .delete-btn:hover { background: rgba(255,50,50,0.4); transform: scale(1.15); }
-    .delete-btn svg { width: 18px; height: 18px; fill: #ff6666; }
+        .top-right-controls {
+            position: fixed; top: calc(var(--safe-t) + 14px); right: calc(var(--safe-r) + 14px); z-index: 100;
+            display: flex; flex-direction: column; align-items: flex-end; gap: 8px; padding: 10px 12px; box-sizing: border-box;
+            max-width: min(280px, calc(100vw - 88px)); border-radius: 18px; border: 1px solid var(--line);
+            background: var(--sidebar-bg); -webkit-backdrop-filter: blur(20px) saturate(180%); backdrop-filter: blur(20px) saturate(180%);
+        }
+        #clock { font-size: 15px; font-weight: 600; letter-spacing: -0.01em; font-variant-numeric: tabular-nums; color: var(--text-2); }
+        #hud { display: flex; flex-direction: column; align-items: flex-end; gap: 8px; max-width: 100%; }
+        .hud-line { font-size: 12px; font-weight: 500; color: var(--text-2); text-align: right; overflow-wrap: anywhere; }
 
-    @keyframes popOut {
-      0% { transform: scale(1) translateY(0); opacity: 1; }
-      60% { transform: scale(1.2) translateY(-30px); opacity: 0.7; }
-      100% { transform: scale(0) translateY(400px); opacity: 0; }
-    }
-    .removing { animation: popOut 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards; }
+        /* Botones (pastilla) */
+        .hud-btn, .fullscreen-btn, .modal-buttons button {
+            font-family: inherit; font-size: 13px; font-weight: 600; letter-spacing: -0.005em; white-space: nowrap;
+            color: var(--text-color); background: var(--fill); border: 0; border-radius: 980px; padding: 8px 14px; cursor: pointer;
+            transition: transform 0.12s var(--ease-out), background-color 0.15s, opacity 0.15s;
+        }
+        .hud-btn:active, .fullscreen-btn:active, .modal-buttons button:active { transform: scale(0.96); }
+        .hud-btn:disabled { opacity: 0.45; cursor: default; }
+        .modal-buttons button:last-child { background: var(--accent-ia); color: #fff; }
+        @media (hover: hover) and (pointer: fine) {
+            .hud-btn:hover:not(:disabled), .fullscreen-btn:hover, .modal-buttons .btn-cancel:hover { background: var(--fill-on); }
+        }
 
-    /* Modales */
-    #gameModal, #addModal {
-      display: none;
-      position: fixed;
-      top: 0; left: 0;
-      width: 100%; height: 100%;
-      background: rgba(0,0,0,0.96);
-      z-index: 100;
-    }
-    #gameModal { padding: 30px; z-index: 200; }
-    .modal-content {
-      position: relative;
-      width: 100%; height: 100%;
-      background: #000;
-      border: 3px solid #222;
-      border-radius: 20px;
-      overflow: hidden;
-    }
-    .modal iframe {
-      width: 100%;
-      height: calc(100% - 80px);
-      border: none;
-      margin-top: 80px;
-    }
-    .modal-controls {
-      position: absolute;
-      top: 0; width: 100%; height: 80px;
-      background: rgba(0,0,0,0.8);
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      padding: 0 30px;
-      z-index: 10;
-    }
-    .btn-close, .btn-fullscreen {
-      padding: 10px 24px;
-      border-radius: 30px;
-      font-weight: 600;
-      font-size: 1rem;
-      cursor: pointer;
-      transition: 0.3s;
-    }
-    .btn-close { background: #ff3333; color: white; }
-    .btn-fullscreen { background: white; color: black; }
+        /* Secciones */
+        .section {
+            display: none; position: relative; z-index: 50; flex-direction: column; align-items: center; height: 100%;
+            overflow-y: auto; overscroll-behavior: contain; box-sizing: border-box; scrollbar-width: none;
+            padding: calc(var(--safe-t) + 76px) 24px 0;
+        }
+        .section::-webkit-scrollbar { display: none; }
+        .section.active { display: flex; animation: enter 0.32s var(--ease-out) both; }
+        .main-title {
+            margin: 0 0 28px; font-size: clamp(32px, 5vw, 48px); font-weight: 700; letter-spacing: -0.035em; line-height: 1.05;
+            text-align: center; text-wrap: balance; overflow-wrap: anywhere;
+        }
 
-    #addModal { align-items: center; justify-content: center; z-index: 300; }
-    .pop-box {
-      background: #111;
-      padding: 40px;
-      border-radius: 20px;
-      border: 2px solid #333;
-      width: 90%;
-      max-width: 420px;
-      text-align: center;
-      animation: pop 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-    }
-    @keyframes pop {
-      0% { transform: scale(0.3); opacity: 0; }
-      70% { transform: scale(1.1); }
-      100% { transform: scale(1); opacity: 1; }
-    }
-    .pop-box input {
-      width: 100%;
-      padding: 14px;
-      margin: 12px 0;
-      background: #222;
-      border: none;
-      border-radius: 10px;
-      color: white;
-      font-family: 'Montserrat', sans-serif;
-      font-size: 1rem;
-    }
-    .pop-box button {
-      margin-top: 20px;
-      padding: 12px 36px;
-      background: #00ff88;
-      color: black;
-      border: none;
-      border-radius: 30px;
-      font-weight: 700;
-      cursor: pointer;
-    }
+        .games-container {
+            display: grid; grid-template-columns: repeat(auto-fill, minmax(min(100%, 190px), 1fr)); gap: 12px;
+            width: 100%; max-width: 1040px; padding-bottom: calc(var(--safe-b) + 96px);
+        }
+        .game-card {
+            min-height: 88px; padding: 20px 18px; box-sizing: border-box; display: flex; align-items: flex-end; min-width: 0;
+            background: var(--card-bg); border: 1px solid var(--line); border-radius: 18px; cursor: pointer;
+            transition: transform 0.2s var(--ease-out), border-color 0.2s, background-color 0.2s;
+        }
+        .game-card:active { transform: scale(0.97); transition-duration: 0.1s; }
+        @media (hover: hover) and (pointer: fine) { .game-card:hover { transform: translateY(-2px); border-color: var(--line-strong); } }
+        .game-card h3 {
+            margin: 0; font-size: 15px; font-weight: 600; letter-spacing: -0.01em; line-height: 1.25; overflow-wrap: anywhere;
+            display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden;
+        }
+        .game-card.add-card { background: transparent; border-style: dashed; color: var(--text-2); }
+        .game-card.custom-card { position: relative; }
+        .delete-custom {
+            position: absolute; top: 8px; right: 8px; width: 24px; height: 24px; border-radius: 50%; border: 0; padding: 0;
+            background: var(--fill); color: var(--text-color); font-size: 11px; cursor: pointer; opacity: 0; transition: opacity 0.15s;
+        }
+        .custom-card:hover .delete-custom, .delete-custom:focus-visible { opacity: 1; }
+        @media (hover: none) { .delete-custom { opacity: 0.7; } }
 
-    @media (max-width: 768px) {
-      .clock { font-size: 1.8rem; top: 15px; left: 15px; }
-      h1 { font-size: 16vw; margin: 80px 0 40px; }
-      .games-grid { grid-template-columns: 1fr; }
-    }
-  </style>
+        /* Ventana del juego */
+        body.game-open::after {
+            content: ""; position: fixed; inset: 0; z-index: 4900; background: rgba(0, 0, 0, 0.5);
+            -webkit-backdrop-filter: blur(10px); backdrop-filter: blur(10px); animation: fade 0.25s var(--ease-out);
+        }
+        #game-window {
+            position: fixed; top: 50%; left: 50%; width: min(94vw, 1400px); height: 88%; z-index: 5000; display: none;
+            flex-direction: column; background: #000; border: 1px solid var(--line); border-radius: 20px; overflow: hidden;
+            box-shadow: var(--shadow); opacity: 0; transform: translate(-50%, -50%) scale(0.96);
+            transition: opacity 0.28s var(--ease-out), transform 0.28s var(--ease-out);
+        }
+        @supports (height: 100dvh) { #game-window { height: 88dvh; } }
+        #game-window.active { display: flex; opacity: 1; transform: translate(-50%, -50%) scale(1); }
+        .game-header {
+            --text-color: #f5f5f7; --fill: rgba(120, 120, 128, 0.32); --fill-on: rgba(255, 255, 255, 0.2);
+            color: #f5f5f7; width: 100%; height: 52px; padding: 0 12px 0 16px; box-sizing: border-box; background: #1c1c1e;
+            display: flex; justify-content: space-between; align-items: center;
+        }
+        .close-x {
+            width: 32px; height: 32px; padding: 0; border: 0; border-radius: 50%; display: grid; place-items: center;
+            background: var(--fill); color: var(--text-color); font-size: 14px; cursor: pointer; transition: transform 0.12s var(--ease-out), background-color 0.15s;
+        }
+        .close-x:active { transform: scale(0.92); }
+        @media (hover: hover) and (pointer: fine) { .close-x:hover { background: var(--danger); } }
+        #game-iframe { width: 100%; height: calc(100% - 52px); border: none; }
+
+        /* Ventanas modales */
+        #add-modal, #auth-modal {
+            position: fixed; inset: 0; z-index: 6000; display: none; align-items: center; justify-content: center;
+            padding: 24px; box-sizing: border-box; background: rgba(0, 0, 0, 0.45);
+            -webkit-backdrop-filter: blur(12px); backdrop-filter: blur(12px);
+        }
+        #add-modal.active, #auth-modal.active { display: flex; animation: fade 0.2s var(--ease-out); }
+        .modal-box {
+            width: 100%; max-width: 380px; padding: 24px; box-sizing: border-box; display: flex; flex-direction: column; gap: 12px;
+            background: var(--sidebar-bg); -webkit-backdrop-filter: blur(30px) saturate(180%); backdrop-filter: blur(30px) saturate(180%);
+            border: 1px solid var(--line); border-radius: 22px; box-shadow: var(--shadow);
+        }
+        #add-modal.active .modal-box, #auth-modal.active .modal-box { animation: pop 0.24s var(--ease-out); }
+        .modal-box h2 { margin: 0 0 4px; font-size: 20px; font-weight: 700; letter-spacing: -0.02em; }
+        .modal-box input {
+            min-width: 0; background: var(--fill); border: 0; border-radius: 12px; color: var(--text-color);
+            font: 16px var(--font); padding: 12px 14px; outline: none; transition: box-shadow 0.2s;
+        }
+        .modal-box input::placeholder { color: var(--text-2); }
+        .modal-box input:focus { box-shadow: 0 0 0 3px rgba(10, 132, 255, 0.35); }
+        .modal-error { color: var(--danger); font-size: 13px; min-height: 1em; }
+        .modal-buttons { display: flex; gap: 8px; justify-content: flex-end; flex-wrap: wrap; }
+
+        #arcade-toast {
+            position: fixed; bottom: calc(var(--safe-b) + 24px); left: 50%; z-index: 7000; max-width: min(92vw, 420px);
+            padding: 10px 18px; border-radius: 980px; border: 1px solid var(--line); text-align: center; box-shadow: var(--shadow);
+            background: var(--sidebar-bg); -webkit-backdrop-filter: blur(20px) saturate(180%); backdrop-filter: blur(20px) saturate(180%);
+            color: var(--text-color); font-size: 14px; font-weight: 500; opacity: 0; pointer-events: none;
+            transform: translateX(-50%) translateY(12px); transition: opacity 0.25s var(--ease-out), transform 0.25s var(--ease-out);
+        }
+        #arcade-toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
+
+        @media (max-width: 640px) {
+            #clock { display: none; }
+            .section { padding: calc(var(--safe-t) + 132px) 16px 0; }
+        }
+        @media (prefers-reduced-motion: reduce) {
+            .section.active, #add-modal.active .modal-box, #auth-modal.active .modal-box { animation-name: fade; }
+            .game-card:hover { transform: none; }
+            .sidebar, .menu-btn .bar { transition-duration: 0.01ms; }
+        }
+    </style>
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 </head>
+
 <body>
 
-  <canvas id="particles"></canvas>
-
-  <!-- Reloj FIJO -->
-  <div class="clock" id="clock">00:00</div>
-
-  <h1 onclick="location.reload()">UBG</h1>
-
-  <div class="container">
-
-    <!-- Tarjetas principales -->
-    <div class="games-grid">
-      <div class="card" onclick="openModal('https://pizzaedition.win/')">
-        <h3>The Pizza Edition</h3>
-        <p>Más de 250 juegos gratis</p>
-      </div>
-      <div class="card" onclick="openModal('https://faf-games.github.io/game/eparkour.html')">
-        <h3>Parkour</h3>
-        <p>supera todos los niveles de este parkour</p>
-      </div>
-      <div class="card" onclick="openModal('https://faf-games.github.io/')">
-        <h3>FAF Games</h3>
-        <p>Juegos no bloqueados variados</p>
-      </div>
-      <div class="card" onclick="openModal('https://www.elimpostorx.com/')">
-        <h3>El Impostor</h3>
-        <p>Juego multijugador de traición</p>
-      </div>
+    <!-- PANTALLA DE BLOQUEO -->
+    <div id="lock-screen">
+        <h1 class="lock-title">UBGames.88</h1>
+        <p class="lock-hint">Introduce el código</p>
+        <input type="password" id="lock-input" placeholder="••••••" autocomplete="off" autofocus>
     </div>
 
-    <!-- Añadir página -->
-    <div class="games-grid">
-      <div class="add-card" onclick="document.getElementById('addModal').style.display='flex'">
-        + Añadir página
-      </div>
+    <!-- VENTANA FLOTANTE DEL JUEGO -->
+    <div id="game-window">
+        <div class="game-header">
+            <button class="fullscreen-btn" onclick="toggleFullscreen()">Pantalla completa</button>
+            <button class="close-x" onclick="closeGame()">✕</button>
+        </div>
+        <iframe id="game-iframe" src=""></iframe>
     </div>
 
-    <!-- Aquí van las personalizadas -->
-    <div id="customGames"></div>
-  </div>
-
-  <!-- Modal juego -->
-  <div id="gameModal">
-    <div class="modal-content">
-      <div class="modal-controls">
-        <div class="btn-close" onclick="closeModal()">Cerrar</div>
-        <div class="btn-fullscreen" onclick="toggleFullscreen()">Pantalla Completa</div>
-      </div>
-      <iframe id="gameIframe" src="" allowfullscreen></iframe>
+    <!-- VENTANA PARA AÑADIR PÁGINA -->
+    <div id="add-modal">
+        <div class="modal-box">
+            <h2>Añadir página</h2>
+            <input type="text" id="add-name" placeholder="Nombre" maxlength="30" autocomplete="off">
+            <input type="text" id="add-url" placeholder="URL (ej: https://ejemplo.com)" autocomplete="off">
+            <div class="modal-error" id="add-error"></div>
+            <div class="modal-buttons">
+                <button class="btn-cancel" onclick="closeAddModal()">Cancelar</button>
+                <button onclick="saveCustomGame()">Guardar</button>
+            </div>
+        </div>
     </div>
-  </div>
 
-  <!-- Modal añadir -->
-  <div id="addModal">
-    <div class="pop-box">
-      <h2 style="margin-bottom:20px; color:#00ff88">+ Añadir página</h2>
-      <input type="url" id="newUrl" placeholder="Insertar URL (ej: https://...)">
-      <input type="text" id="newName" placeholder="Nombre del juego">
-      <button onclick="addNewGame()">Añadir</button>
+    <!-- VENTANA DE CUENTA (login / registro) -->
+    <div id="auth-modal">
+        <div class="modal-box">
+            <h2>Tu cuenta</h2>
+            <input type="email" id="auth-email" placeholder="Email" autocomplete="email">
+            <input type="text" id="auth-username" placeholder="Nombre de usuario (solo al crear cuenta)" maxlength="16" autocomplete="username">
+            <input type="password" id="auth-pass" placeholder="Contraseña (mín. 6 caracteres)" autocomplete="current-password">
+            <div class="modal-error" id="auth-error"></div>
+            <div class="modal-buttons">
+                <button class="btn-cancel" id="auth-cancel">Cancelar</button>
+                <button id="auth-signup">Crear cuenta</button>
+                <button id="auth-signin">Entrar</button>
+            </div>
+        </div>
     </div>
-  </div>
 
-  <script>
-    // Reloj fijo
-    function updateClock() {
-      const now = new Date();
-      const h = String(now.getHours()).padStart(2,'0');
-      const m = String(now.getMinutes()).padStart(2,'0');
-      document.getId('clock').textContent = `${h}:${m}`;
-    }
-    updateClock();
-    setInterval(updateClock, 1000);
+    <div id="arcade-toast"></div>
 
-    // Partículas
-    const canvas = document.getElementById('particles');
-    const ctx = canvas.getContext('2d');
-    canvas.width = innerWidth; canvas.height = innerHeight;
-    window.addEventListener('resize', () => { canvas.width = innerWidth; canvas.height = innerHeight; });
+    <!-- CONTENIDO PRINCIPAL -->
+    <div id="main-content">
+        <!-- Menú hamburguesa -->
+        <div class="menu-btn" id="hamburger-menu" onclick="toggleSidebar()">
+            <div class="bar"></div>
+            <div class="bar"></div>
+            <div class="bar"></div>
+        </div>
 
-    const particles = Array.from({length: 130}, () => ({
-      x: Math.random() * canvas.width,
-      y: Math.random() * canvas.height,
-      size: Math.random() * 3.5 + 1,
-      speedY: Math.random() * 1.3 + 0.4,
-      speedX: Math.random() * 0.6 - 0.3
-    }));
+        <!-- Barra lateral (rewards.js añade aquí "Misiones y logros", "Tienda" y "Anticipado") -->
+        <div class="sidebar" id="sidebar">
+            <div class="sidebar-item active" id="btn-games" onclick="showSection('games')">Juegos</div>
+            <div class="sidebar-item" id="btn-apps" onclick="showSection('apps')">Apps</div>
+            <div class="sidebar-item" id="btn-mypages" onclick="showSection('mypages')">Mis páginas</div>
+            <div class="sidebar-item danger" onclick="logout()">Salir</div>
+        </div>
 
-    function animate() {
-      ctx.clearRect(0,0,canvas.width,canvas.height);
-      particles.forEach(p => {
-        p.y += p.speedY; p.x += p.speedX;
-        if (p.y > canvas.height) { p.y = -10; p.x = Math.random() * canvas.width; }
-        ctx.fillStyle = 'rgba(255,255,255,0.85)';
-        ctx.beginPath(); ctx.arc(p.x, p.y, p.size, 0, Math.PI*2); ctx.fill();
-      });
-      requestAnimationFrame(animate);
-    }
-    animate();
+        <!-- Reloj y tema -->
+        <div class="top-right-controls">
+            <div id="clock">00:00:00</div>
+            <button class="theme-toggle hud-btn" onclick="toggleTheme()">Modo claro</button>
+            <div id="hud"></div>
+        </div>
 
-    // Icono papelera
-    const trashSVG = `<svg viewBox="0 0 24 24"><path d="M19 4h-3.5l-1-1h-5l-1 1H5v2h14M6 19a2 2 0 0 0 2 2h8a2 2 0 0 0 2-2V7H6v12z"/></svg>`;
+        <!-- SECCIÓN: JUEGOS -->
+        <section id="games-section" class="section active">
+            <h1 class="main-title">UBGames.88</h1>
+            <div class="games-container">
+                <div class="game-card" onclick="openGame('https://geometrylitepc.io/')"><h3>Geometry Dash</h3></div>
+                <div class="game-card" onclick="openGame('https://survival-race.io/')"><h3>Survival Race</h3></div>
+                <div class="game-card" onclick="openGame('https://spacewaves.io/')"><h3>Space Waves</h3></div>
+                <div class="game-card" onclick="openGame('https://eaglercraft.dev/')"><h3>Minecraft</h3></div>
+                <div class="game-card" onclick="openGame('https://rocketsoccerderby.gitlab.io/')"><h3>Rocket League</h3></div>
+                <div class="game-card" onclick="openGame('https://startgamer.net/top/new')"><h3>StartGamer</h3></div>
+                <div class="game-card" onclick="openGame('https://itsvijaysingh.github.io/Snow-Rider3D/')"><h3>Snow Riding</h3></div>
+                <div class="game-card" onclick="openGame('https://pizza-edition-unblocked.github.io/all-games.html')"><h3>Pizza Edition</h3></div>
+                <div class="game-card" onclick="openGame('https://space-bar-clicker.pages.dev/')"><h3>SpaceBar Clicker</h3></div>
+                <div class="game-card" onclick="openGame('https://23-azo.github.io/')"><h3>23-Azo GitHub</h3></div>
+                <div class="game-card" onclick="openGame('https://startgamer.net/game/31434')"><h3>My Perfect Hotel</h3></div>
+                <div class="game-card" onclick="openGame('https://1v1-lolunblocked.gitlab.io/')"><h3>1v1.LOL</h3></div>
+                <div class="game-card" onclick="openGame('https://bigsmacky3.github.io/games/flash48.html')"><h3>Core Ball</h3></div>
+                <div class="game-card" onclick="openGame('https://tinyfishingame.com/')"><h3>Tiny Fishing</h3></div>
+                <div class="game-card" onclick="openGame('https://core-ball.gitlab.io/paper.io2.html')"><h3>Paper.io 2</h3></div>
+                <div class="game-card" onclick="openGame('https://fnaf1.io/')"><h3>Five Nights at Freddy's</h3></div>
+                <div class="game-card" onclick="openGame('https://penaltyshooters.gitlab.io/')"><h3>Penalty Shooters</h3></div>
+                <div class="game-card" onclick="openGame('https://monkeymart.co.uk/')"><h3>Monkey Mart</h3></div>
+                <div class="game-card" onclick="openGame('https://zapgames.io/')"><h3>Zap Games</h3></div>
+                <div class="game-card" onclick="openGame('https://flappybird2.pages.dev/game2/')"><h3>Flappy Bird</h3></div>
+                <div class="game-card" onclick="openGame('https://slithergame.io/sushi-party')"><h3>Sushi Party</h3></div>
+                <div class="game-card" onclick="openGame('https://bottleflip3d.com/')"><h3>Bottle Flip 3D</h3></div>
+                <div class="game-card" onclick="openGame('https://riseuplabs.com/play/stack/')"><h3>Stack Game</h3></div>
+                <div class="game-card" onclick="openGame('https://thepizzaedition-games.github.io/')"><h3>Pizza Ed. Games</h3></div>
+                <div class="game-card" onclick="openGame('https://subwaysurfersunblocked.org/es')"><h3>Subway Surfers</h3></div>
+                <div class="game-card" onclick="openGame('https://soundbuttons.com/es')"><h3>SoundButtons</h3></div>
+                <div class="game-card" onclick="openGame('https://magical-kicks.netlify.app/')"><h3>Magic Kicks</h3></div>
+                <div class="game-card" onclick="openGame('https://crossy-road.io/')"><h3>Crossy Road</h3></div>
+                <div class="game-card" onclick="openGame('https://www.snake.es/')"><h3>Snake</h3></div>
+                <div class="game-card" onclick="openGame('https://ubg98.github.io/PenaltyKickOnline/')"><h3>Penalty Kicks</h3></div>
+                <div class="game-card" onclick="openGame('https://subwaysurfers-unblocked.gitlab.io/')"><h3>Subway Surfers</h3></div>
+                <div class="game-card" onclick="openGame('https://slope-unblocked-games.github.io/car.html')"><h3>Car Games</h3></div>
+                <div class="game-card" onclick="openGame('https://stickman-unblocked.github.io/')"><h3>Stickman Hook</h3></div>
+                <div class="game-card" onclick="openGame('https://cdn.jsdelivr.net/gh/lucideproxy/svg@latest/logo.svg#/')"><h3>LucideProxy</h3></div>
+                <div class="game-card" onclick="openGame('https://tyronegames.gitlab.io/category/trending.html')"><h3>TyroneGames</h3></div>
+                <div class="game-card" onclick="openGame('https://duckify.top/')"><h3>Duckify</h3></div>
 
-    // Juegos guardados
-    let savedGames = JSON.parse(localStorage.getItem('ubg_custom_games') || '[]');
-    const customContainer = document.getElementById('customGames');
+                <!-- Huecos personalizados (de pago): los pinta rewards.js -->
+                <div id="custom-games" style="display: contents;"></div>
+            </div>
+        </section>
 
-    function renderGames() {
-      customContainer.innerHTML = '';
-      savedGames.forEach((game, i) => {
-        const row = document.createElement('div');
-        row.className = 'games-grid';
-        row.innerHTML = `
-          <div class="card" onclick="openModal('${game.url}')">
-            <div class="delete-btn" onclick="deleteGame(${i}, event)">${trashSVG}</div>
-            <h3>${game.name}</h3>
-            <p>Juego personalizado</p>
-          </div>
-        `;
-        customContainer.appendChild(row);
-      });
-    }
-    renderGames();
+        <!-- SECCIÓN: APPS -->
+        <section id="apps-section" class="section">
+            <h1 class="main-title">Apps</h1>
+            <div class="games-container">
+                <div class="game-card" onclick="window.open('https://youtube.com', '_blank')"><h3>YouTube</h3></div>
+                <div class="game-card" onclick="window.open('https://spotify.com', '_blank')"><h3>Spotify</h3></div>
+                <div class="game-card" onclick="window.open('http://msn.com/en-us/play', '_blank')"><h3>MSN Play</h3></div>
+            </div>
+        </section>
 
-    function addNewGame() {
-      let url = document.getElementById('newUrl').value.trim();
-      const name = document.getElementById('newName').value.trim();
+        <!-- SECCIÓN: MIS PÁGINAS -->
+        <section id="mypages-section" class="section">
+            <h1 class="main-title">Mis páginas</h1>
+            <div class="games-container">
+                <div class="game-card" onclick="window.open('https://ivooubi.github.io/todolist/', '_blank')"><h3>To Do List</h3></div>
+                <div class="game-card" onclick="window.open('https://ivooubi.github.io/clicker/', '_blank')"><h3>Clicker</h3></div>
+                <div class="game-card" onclick="window.open('https://ivooubi.github.io/zen/', '_blank')"><h3>Zen</h3></div>
+                <div class="game-card" onclick="window.open('https://ivooubi.github.io/formula1/', '_blank')"><h3>Formula 1</h3></div>
+            </div>
+        </section>
+    </div>
 
-      if (!url || !name) return alert('¡Completa ambos campos!');
-      if (!/^https?:\/\//i.test(url)) url = 'https://' + url;
+    <script>
+        /* ================= ARCADE LEVELS (Supabase) ================= */
+        (function () {
+            if (!window.supabase) {
+                console.warn('La librería de Supabase no se ha cargado.');
+                return;
+            }
 
-      savedGames.push({url, name});
-      localStorage.setItem('ubg_custom_games', JSON.stringify(savedGames));
-      renderGames();
+            const SUPABASE_URL = 'https://znxaokgfetpwraizodpu.supabase.co';
+            const SUPABASE_KEY = 'sb_publishable_nbRIxYwPXITtvVA5Y4Mi1g_UcpP02ZW';
+            const HEARTBEAT_MS = 30000;
 
-      document.getElementById('addModal').style.display = 'none';
-      document.getElementById('newUrl').value = '';
-      document.getElementById('newName').value = '';
-    }
+            const sb = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
 
-    function deleteGame(i, e) {
-      e.stopPropagation();
-      const card = e.target.closest('.card');
-      card.classList.add('removing');
-      setTimeout(() => {
-        savedGames.splice(i, 1);
-        localStorage.setItem('ubg_custom_games', JSON.stringify(savedGames));
-        renderGames();
-      }, 600);
-    }
+            const hud = document.getElementById('hud');
+            const authModal = document.getElementById('auth-modal');
+            const authEmail = document.getElementById('auth-email');
+            const authPass = document.getElementById('auth-pass');
+            const authUser = document.getElementById('auth-username');
+            const authError = document.getElementById('auth-error');
+            const toastEl = document.getElementById('arcade-toast');
 
-    function openModal(url) {
-      document.getElementById('gameIframe').src = url;
-      document.getElementById('gameModal').style.display = 'block';
-      document.body.style.overflow = 'hidden';
-    }
-    function closeModal() {
-      document.getElementById('gameModal').style.display = 'none';
-      document.getElementById('gameIframe').src = '';
-      document.body.style.overflow = '';
-    }
-    function toggleFullscreen() {
-      const iframe = document.getElementById('gameIframe');
-      (iframe.requestFullscreen || iframe.webkitRequestFullscreen || iframe.msRequestFullscreen || (() => {})).call(iframe);
-    }
+            let sessionId = null;
+            let currentSlug = null;
+            let heartbeatTimer = null;
+            let toastTimer = null;
 
-    document.addEventListener('keydown', e => { if(e.key === 'Escape') closeModal(); });
-    document.getElementById('addModal').addEventListener('click', e => {
-      if (e.target === document.getElementById('addModal')) document.getElementById('addModal').style.display = 'none';
-    });
-  </script>
+            /* ---------- Utilidades ---------- */
+            function toast(text) {
+                toastEl.textContent = text;
+                toastEl.classList.add('show');
+                clearTimeout(toastTimer);
+                toastTimer = setTimeout(() => toastEl.classList.remove('show'), 3500);
+            }
+
+            function slugFromUrl(url) {
+                try {
+                    const u = new URL(url);
+                    return (u.hostname + u.pathname)
+                        .toLowerCase()
+                        .replace(/[^a-z0-9]+/g, '-')
+                        .replace(/^-+|-+$/g, '')
+                        .slice(0, 60) || 'juego';
+                } catch (e) {
+                    return 'juego';
+                }
+            }
+
+            async function rpc(name, args) {
+                const { data, error } = await sb.rpc(name, args);
+                if (error) throw error;
+                return data;
+            }
+
+            async function getUser() {
+                const { data } = await sb.auth.getSession();
+                return data.session ? data.session.user : null;
+            }
+
+            function makeButton(label, handler) {
+                const b = document.createElement('button');
+                b.className = 'hud-btn';
+                b.textContent = label;
+                b.addEventListener('click', handler);
+                return b;
+            }
+
+            /* ---------- Panel de estado (HUD) ---------- */
+            let hudRun = 0;
+            async function renderHud() {
+                const run = ++hudRun;                    // solo la última llamada pinta
+                const frag = document.createDocumentFragment();
+                const user = await getUser();
+
+                if (!user) {
+                    const none = document.createElement('div');
+                    none.className = 'hud-line';
+                    none.textContent = 'Sin sesión · entra en Ajustes';
+                    frag.appendChild(none);
+                    if (run === hudRun) hud.replaceChildren(frag);
+                    return;
+                }
+
+                let profile = null;
+                let streak = null;
+                try {
+                    const res = await sb.from('profiles')
+                        .select('username, exp, coins, ranks(name)')
+                        .eq('id', user.id)
+                        .single();
+                    profile = res.data;
+                    streak = await rpc('get_streak_status');
+                } catch (e) {
+                    console.warn('No se pudo cargar el perfil:', e.message || e);
+                }
+                if (run !== hudRun) return;
+
+                if (profile) {
+                    const line = document.createElement('div');
+                    line.className = 'hud-line';
+                    const rankName = profile.ranks ? profile.ranks.name : '';
+                    line.textContent = profile.username + ' · ' + rankName + ' · ' +
+                        profile.exp + ' EXP · ' + profile.coins + ' monedas';
+                    frag.appendChild(line);
+                }
+
+                if (streak) {
+                    const label = streak.can_claim
+                        ? '🔥 Reclamar racha diaria'
+                        : '🔥 Racha: ' + streak.current_streak + ' día(s) ✓';
+                    const b = makeButton(label, claimStreak);
+                    b.disabled = !streak.can_claim;
+                    frag.appendChild(b);
+                }
+
+                hud.replaceChildren(frag);
+            }
+
+            /* ---------- Cuenta ---------- */
+            function openAuth() {
+                authError.textContent = '';
+                authModal.classList.add('active');
+                authEmail.focus();
+            }
+
+            function closeAuth() {
+                authModal.classList.remove('active');
+                authPass.value = '';
+            }
+
+            function friendlyError(err) {
+                const m = (err && err.message) || '';
+                if (/invalid login/i.test(m)) return 'Email o contraseña incorrectos.';
+                if (/already registered/i.test(m)) return 'Ese email ya tiene cuenta. Pulsa "Entrar".';
+                if (/password/i.test(m)) return 'La contraseña debe tener al menos 6 caracteres.';
+                if (/email/i.test(m)) return 'El email no es válido.';
+                return m || 'Ha ocurrido un error.';
+            }
+
+            async function doSignIn() {
+                authError.textContent = '';
+                const { error } = await sb.auth.signInWithPassword({
+                    email: authEmail.value.trim(),
+                    password: authPass.value
+                });
+                if (error) {
+                    authError.textContent = friendlyError(error);
+                    return;
+                }
+                closeAuth();
+                toast('Sesión iniciada');
+            }
+
+            async function doSignUp() {
+                authError.textContent = '';
+                const username = authUser.value.trim();
+                if (!/^[A-Za-z0-9_]{3,16}$/.test(username)) {
+                    authError.textContent = 'Elige un nombre de usuario (3-16 letras, números o _).';
+                    return;
+                }
+                const { data, error } = await sb.auth.signUp({
+                    email: authEmail.value.trim(),
+                    password: authPass.value
+                });
+                if (error) {
+                    authError.textContent = friendlyError(error);
+                    return;
+                }
+                if (!data.session) {
+                    authError.textContent = 'Cuenta creada, pero Supabase pide confirmar el email. ' +
+                        'Desactiva "Confirm email" en Authentication > Sign In / Providers > Email.';
+                    return;
+                }
+                closeAuth();
+                try {
+                    await rpc('rw_set_username', { p_name: username });
+                    toast('Cuenta creada. ¡Bienvenido, ' + username + '!');
+                } catch (e) {
+                    toast('Cuenta creada, pero el nombre falló: ' + (e.message || 'inténtalo con ✎'));
+                }
+                renderHud();
+            }
+
+            async function signOut() {
+                await stopGame();
+                await sb.auth.signOut();
+            }
+
+            document.getElementById('auth-signin').addEventListener('click', doSignIn);
+            document.getElementById('auth-signup').addEventListener('click', doSignUp);
+            document.getElementById('auth-cancel').addEventListener('click', closeAuth);
+            authModal.addEventListener('keydown', (e) => {
+                if (e.key === 'Enter') doSignIn();
+                if (e.key === 'Escape') closeAuth();
+            });
+
+            // Nota: no se llama a funciones de Supabase directamente dentro de este
+            // callback (puede bloquearse); se difiere con setTimeout.
+            sb.auth.onAuthStateChange(() => setTimeout(renderHud, 0));
+
+            /* ---------- Racha diaria ---------- */
+            async function claimStreak() {
+                try {
+                    const res = await rpc('claim_daily_streak');
+                    if (res.claimed) {
+                        toast('Racha de ' + res.current_streak + ' día(s): +' +
+                            res.reward.exp + ' EXP, +' + res.reward.coins + ' monedas');
+                    } else {
+                        toast('Ya has reclamado la racha de hoy');
+                    }
+                } catch (e) {
+                    console.warn('No se pudo reclamar la racha:', e.message || e);
+                    toast('No se pudo reclamar la racha');
+                }
+                renderHud();
+            }
+
+            /* ---------- Tiempo de juego ---------- */
+            // El juego va en un iframe de otra web: no se puede saber si el usuario
+            // mueve el ratón dentro. Se cuenta como activo si la pestaña es visible
+            // y tiene el foco. El tope diario del servidor limita el resto.
+            function isUserPresent() {
+                return document.visibilityState === 'visible' && document.hasFocus();
+            }
+
+            async function sendHeartbeat() {
+                if (!sessionId || !isUserPresent()) return;
+                try {
+                    const res = await rpc('play_heartbeat', { p_session_id: sessionId });
+
+                    if (res && res.ok === false) {
+                        const slug = currentSlug;
+                        sessionId = null;
+                        if (slug) await beginSession(slug);
+                        return;
+                    }
+                    if (res && res.reward) renderHud();
+                } catch (e) {
+                    console.warn('Latido fallido:', e.message || e);
+                }
+            }
+
+            async function beginSession(slug) {
+                sessionId = await rpc('start_play_session', { p_game_slug: slug });
+                currentSlug = slug;
+                clearInterval(heartbeatTimer);
+                heartbeatTimer = setInterval(sendHeartbeat, HEARTBEAT_MS);
+            }
+
+            async function startGame(url) {
+                try {
+                    const user = await getUser();
+                    if (!user) return;
+                    await beginSession(slugFromUrl(url));
+                } catch (e) {
+                    console.warn('No se pudo iniciar la sesión de juego:', e.message || e);
+                }
+            }
+
+            async function stopGame() {
+                clearInterval(heartbeatTimer);
+                heartbeatTimer = null;
+                const id = sessionId;
+                sessionId = null;
+                currentSlug = null;
+                if (!id) return;
+                try {
+                    await rpc('end_play_session', { p_session_id: id });
+                } catch (e) {
+                    console.warn('No se pudo cerrar la sesión:', e.message || e);
+                }
+            }
+
+            window.Arcade = { startGame, stopGame };
+            // Expuestos para el sistema de recompensas (rewards.js)
+            window.sb = sb;
+            window.renderHud = renderHud;
+            window.openAuth = openAuth;
+            window.signOut = signOut;
+            renderHud();
+        })();
+        /* ================= FIN ARCADE LEVELS ================= */
+
+        const lockInput = document.getElementById('lock-input');
+        const lockScreen = document.getElementById('lock-screen');
+        const mainContent = document.getElementById('main-content');
+        const gameWindow = document.getElementById('game-window');
+        const gameIframe = document.getElementById('game-iframe');
+        const hamburger = document.getElementById('hamburger-menu');
+
+        // Cerrar la barra lateral pulsando fuera (scrim) o con Escape
+        mainContent.addEventListener('click', (e) => {
+            if (e.target === mainContent && document.getElementById('sidebar').classList.contains('active')) toggleSidebar();
+        });
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape' && document.getElementById('sidebar').classList.contains('active')) toggleSidebar();
+        });
+
+        function showSection(id) {
+            document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
+            document.getElementById(id + '-section').classList.add('active');
+
+            document.querySelectorAll('.sidebar-item').forEach(item => item.classList.remove('active'));
+            if (document.getElementById('btn-' + id)) {
+                document.getElementById('btn-' + id).classList.add('active');
+            }
+            toggleSidebar();
+        }
+
+        lockInput.addEventListener('input', (e) => {
+            if (e.target.value.toLowerCase() === 'castor') {
+                lockScreen.classList.add('hidden');
+                mainContent.style.display = 'block';
+                setTimeout(() => {
+                    mainContent.classList.add('visible');
+                }, 10);
+            }
+        });
+
+        function logout() {
+            mainContent.classList.remove('visible');
+            document.getElementById('sidebar').classList.remove('active');
+            hamburger.classList.remove('open');
+            setTimeout(() => {
+                mainContent.style.display = 'none';
+                lockScreen.classList.remove('hidden');
+                lockInput.value = '';
+                lockInput.focus();
+            }, 500);
+        }
+
+        function openGame(url) {
+            gameIframe.src = url;
+            if (window.Arcade) Arcade.startGame(url);
+            gameWindow.style.display = 'flex';
+            document.body.classList.add('game-open');
+            setTimeout(() => gameWindow.classList.add('active'), 10);
+        }
+
+        function closeGame() {
+            gameWindow.classList.remove('active');
+            if (window.Arcade) Arcade.stopGame();
+            document.body.classList.remove('game-open');
+            setTimeout(() => {
+                gameWindow.style.display = 'none';
+                gameIframe.src = '';
+            }, 300);
+        }
+
+        function toggleFullscreen() {
+            if (!document.fullscreenElement) {
+                if (gameIframe.requestFullscreen) {
+                    gameIframe.requestFullscreen();
+                } else if (gameWindow.requestFullscreen) {
+                    gameWindow.requestFullscreen();
+                }
+            } else {
+                document.exitFullscreen();
+            }
+        }
+
+        function updateClock() {
+            document.getElementById('clock').textContent =
+                new Date().toLocaleTimeString('es-ES', { hour12: false });
+        }
+
+        setInterval(updateClock, 1000);
+        updateClock();
+
+        function toggleSidebar() {
+            document.getElementById('sidebar').classList.toggle('active');
+            hamburger.classList.toggle('open');
+        }
+
+        function applyTheme(light, save) {
+            document.body.classList.toggle('light-mode', light);
+            const b = document.querySelector('.theme-toggle');
+            if (b) b.textContent = light ? 'Modo oscuro' : 'Modo claro';
+            const m = document.getElementById('theme-color');
+            if (m) m.content = light ? '#f5f5f7' : '#000000';
+            if (save) { try { localStorage.setItem('ubg_theme', light ? 'light' : 'dark'); } catch (e) { } }
+        }
+
+        function toggleTheme() {
+            applyTheme(!document.body.classList.contains('light-mode'), true);
+        }
+
+        (function initTheme() {
+            let t = null;
+            try { t = localStorage.getItem('ubg_theme'); } catch (e) { }
+            applyTheme(t ? t === 'light' : window.matchMedia('(prefers-color-scheme: light)').matches, false);
+        })();
+
+        /* Las páginas propias ahora son de pago y viven en rewards.js */
+
+        document.getElementById('add-modal').addEventListener('keydown', (e) => {
+            if (e.key === 'Enter') saveCustomGame();
+            if (e.key === 'Escape') closeAddModal();
+        });
+
+
+            </script>
+
+    <!-- Sistema de recompensas: misiones, logros y tienda (requiere rewards.sql en Supabase) -->
+    <script src="rewards.js"></script>
+    <script defer src="/_vercel/insights/script.js"></script>
 </body>
+
 </html>
