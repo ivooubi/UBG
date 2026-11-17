@@ -23,256 +23,254 @@
     <title>UBGames.88</title>
     <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><circle cx='50' cy='50' r='50' fill='%23faff00'/></svg>">
     <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&display=swap" rel="stylesheet">
 
     <style>
-        /* ===== Sistema de diseño: minimalista, estilo Apple ===== */
+        /* ===== UBGames.88 · sistema de diseño (minimalista) ===== */
         :root {
             color-scheme: dark;
-            --bg-color: #000;
-            --text-color: #f5f5f7;
-            --text-2: #a1a1a6;
-            --card-bg: rgba(255, 255, 255, 0.06);
-            --sidebar-bg: rgba(28, 28, 30, 0.72);
-            --accent-ia: #0a84ff;
-            --danger: #ff453a;
-            --line: rgba(255, 255, 255, 0.1);
-            --line-strong: rgba(255, 255, 255, 0.24);
-            --fill: rgba(120, 120, 128, 0.24);
-            --fill-on: rgba(255, 255, 255, 0.16);
-            --shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
+            --bg-color: #0a0a0b;
+            --text-color: #ededef;
+            --text-2: #8b8b92;
+            --card-bg: rgba(255, 255, 255, 0.035);
+            --sidebar-bg: #0e0e10;
+            --accent-ia: #5b8cff;
+            --danger: #ff5a52;
+            --line: rgba(255, 255, 255, 0.08);
+            --line-strong: rgba(255, 255, 255, 0.2);
+            --fill: rgba(255, 255, 255, 0.07);
+            --fill-on: rgba(255, 255, 255, 0.12);
+            --shadow: 0 24px 64px rgba(0, 0, 0, 0.55);
             --ease-out: cubic-bezier(0.23, 1, 0.32, 1);
             --ease-drawer: cubic-bezier(0.32, 0.72, 0, 1);
-            --font: -apple-system, BlinkMacSystemFont, "SF Pro Display", "SF Pro Text", "Inter", system-ui, "Segoe UI", Roboto, sans-serif;
+            --font: 'Montserrat', system-ui, -apple-system, 'Segoe UI', sans-serif;
+            --side-w: 248px;
             --safe-t: env(safe-area-inset-top, 0px);
             --safe-b: env(safe-area-inset-bottom, 0px);
             --safe-l: env(safe-area-inset-left, 0px);
             --safe-r: env(safe-area-inset-right, 0px);
         }
-
         body.light-mode {
             color-scheme: light;
-            --bg-color: #f5f5f7;
-            --text-color: #1d1d1f;
-            --text-2: #6e6e73;
-            --card-bg: rgba(255, 255, 255, 0.72);
-            --sidebar-bg: rgba(255, 255, 255, 0.78);
-            --accent-ia: #0071e3;
-            --danger: #ff3b30;
-            --line: rgba(0, 0, 0, 0.08);
-            --line-strong: rgba(0, 0, 0, 0.2);
-            --fill: rgba(120, 120, 128, 0.14);
-            --fill-on: #fff;
-            --shadow: 0 20px 60px rgba(0, 0, 0, 0.15);
+            --bg-color: #f6f6f7; --text-color: #111113; --text-2: #6b6b73;
+            --card-bg: #ffffff; --sidebar-bg: #ffffff; --accent-ia: #2f63e0; --danger: #e5392f;
+            --line: rgba(0, 0, 0, 0.08); --line-strong: rgba(0, 0, 0, 0.22);
+            --fill: rgba(0, 0, 0, 0.05); --fill-on: rgba(0, 0, 0, 0.09); --shadow: 0 24px 64px rgba(0, 0, 0, 0.14);
         }
-
         /* Con un fondo de la tienda (siempre oscuro) se fuerzan los colores oscuros */
         body.light-mode.has-bg {
             color-scheme: dark;
-            --text-color: #f5f5f7; --text-2: #a1a1a6; --card-bg: rgba(255, 255, 255, 0.08);
-            --sidebar-bg: rgba(28, 28, 30, 0.72); --accent-ia: #0a84ff; --danger: #ff453a;
-            --line: rgba(255, 255, 255, 0.12); --line-strong: rgba(255, 255, 255, 0.24);
-            --fill: rgba(120, 120, 128, 0.28); --fill-on: rgba(255, 255, 255, 0.18);
+            --text-color: #ededef; --text-2: #a0a0a8; --card-bg: rgba(255, 255, 255, 0.07); --sidebar-bg: rgba(14, 14, 16, 0.85);
+            --accent-ia: #5b8cff; --danger: #ff5a52; --line: rgba(255, 255, 255, 0.12); --line-strong: rgba(255, 255, 255, 0.24);
+            --fill: rgba(255, 255, 255, 0.1); --fill-on: rgba(255, 255, 255, 0.16);
         }
 
         html { -webkit-tap-highlight-color: transparent; overscroll-behavior: none; -webkit-text-size-adjust: 100%; text-size-adjust: 100%; }
         body, html {
-            margin: 0; padding: 0; width: 100%; height: 100%;
+            margin: 0; padding: 0; width: 100%; height: 100%; overflow: hidden;
             background-color: var(--bg-color); color: var(--text-color);
-            font-family: var(--font); -webkit-font-smoothing: antialiased; text-rendering: optimizeLegibility;
-            overflow: hidden; transition: background-color 0.4s, color 0.4s;
+            font-family: var(--font); font-size: 14px; line-height: 1.5; -webkit-font-smoothing: antialiased;
+            transition: background-color 0.3s, color 0.3s;
         }
         @supports (height: 100dvh) { body, html { height: 100dvh; } }
-
+        button, input, select, textarea { font-family: inherit; }
         button, .game-card, .sidebar-item, .menu-btn { -webkit-user-select: none; user-select: none; touch-action: manipulation; }
         :focus-visible { outline: 2px solid var(--accent-ia); outline-offset: 2px; }
 
         @keyframes fade { from { opacity: 0; } }
-        @keyframes enter { from { opacity: 0; transform: translateY(8px); } }
-        @keyframes pop { from { opacity: 0; transform: scale(0.96); } }
+        @keyframes enter { from { opacity: 0; transform: translateY(6px); } }
+        @keyframes rise { from { opacity: 0; transform: translateY(8px); } }
+        @keyframes pop { from { opacity: 0; transform: scale(0.97); } }
 
-        /* ===== Pantalla de bloqueo ===== */
+        /* ===== Bloqueo ===== */
         #lock-screen {
-            position: fixed; inset: 0; background: var(--bg-color); z-index: 9999;
-            display: flex; flex-direction: column; align-items: center; justify-content: center;
-            gap: 14px; padding: 24px; animation: fade 0.5s var(--ease-out);
+            position: fixed; inset: 0; z-index: 9999; background: var(--bg-color); padding: 24px;
+            display: flex; flex-direction: column; align-items: center; justify-content: center; animation: fade 0.5s var(--ease-out);
         }
         #lock-screen.hidden { display: none; }
-        .lock-title { margin: 0; font-size: clamp(28px, 6vw, 40px); font-weight: 700; letter-spacing: -0.035em; }
-        .lock-hint { margin: 0 0 8px; color: var(--text-2); font-size: 15px; }
+        .lock-mark { width: 12px; height: 12px; border-radius: 50%; background: #faff00; margin-bottom: 28px; }
+        .lock-title { margin: 0; font-size: 22px; font-weight: 600; letter-spacing: -0.02em; }
+        .lock-hint { margin: 6px 0 30px; color: var(--text-2); font-size: 13px; }
         #lock-input {
-            width: min(280px, 80vw); box-sizing: border-box; background: var(--fill); border: 0; border-radius: 14px;
-            color: var(--text-color); font: 500 20px var(--font); text-align: center; letter-spacing: 0.3em;
-            padding: 14px 16px; outline: none; text-transform: lowercase; transition: box-shadow 0.2s;
+            width: min(260px, 76vw); padding: 10px 0 10px 0.35em; background: transparent; border: 0; border-bottom: 1px solid var(--line-strong);
+            border-radius: 0; color: var(--text-color); font: 500 18px var(--font); letter-spacing: 0.35em; text-align: center;
+            text-transform: lowercase; outline: none; transition: border-color 0.25s;
         }
-        #lock-input:focus { box-shadow: 0 0 0 3px rgba(10, 132, 255, 0.35); }
+        #lock-input:focus { border-color: var(--text-color); }
 
-        /* ===== Contenido ===== */
-        #main-content { opacity: 0; transition: opacity 0.5s; height: 100%; width: 100%; display: none; }
+        /* ===== Estructura ===== */
+        #main-content { opacity: 0; transition: opacity 0.5s; height: 100%; width: 100%; display: none; box-sizing: border-box; }
         #main-content.visible { opacity: 1; display: block; }
 
-        .menu-btn {
-            position: fixed; top: calc(var(--safe-t) + 14px); left: calc(var(--safe-l) + 14px);
-            width: 44px; height: 44px; padding: 15px 13px; box-sizing: border-box; z-index: 1001; cursor: pointer;
-            display: flex; flex-direction: column; justify-content: space-between; border-radius: 50%;
-            background: var(--sidebar-bg); -webkit-backdrop-filter: blur(20px) saturate(180%); backdrop-filter: blur(20px) saturate(180%);
-            border: 1px solid var(--line); transition: transform 0.15s var(--ease-out);
-        }
-        .menu-btn:active { transform: scale(0.94); }
-        .menu-btn .bar { width: 100%; height: 2px; border-radius: 1px; background: var(--text-color); transition: transform 0.35s var(--ease-drawer), opacity 0.2s; }
-        .menu-btn.open .bar:nth-child(1) { transform: translateY(6px) rotate(45deg); }
-        .menu-btn.open .bar:nth-child(2) { opacity: 0; transform: scaleX(0); }
-        .menu-btn.open .bar:nth-child(3) { transform: translateY(-6px) rotate(-45deg); }
-
         .sidebar {
-            position: fixed; top: 0; left: 0; bottom: 0; width: min(300px, 82vw); box-sizing: border-box; z-index: 1000;
-            padding: calc(var(--safe-t) + 76px) 12px 24px calc(var(--safe-l) + 12px);
-            background: var(--sidebar-bg); -webkit-backdrop-filter: blur(30px) saturate(180%); backdrop-filter: blur(30px) saturate(180%);
-            border-right: 1px solid var(--line); overflow-y: auto; overscroll-behavior: contain;
-            transform: translateX(-102%); visibility: hidden;
-            transition: transform 0.34s var(--ease-drawer), visibility 0s 0.34s;
+            position: fixed; top: 0; bottom: 0; left: 0; width: var(--side-w); z-index: 1000; box-sizing: border-box;
+            display: flex; flex-direction: column; background: var(--sidebar-bg); border-right: 1px solid var(--line);
+            padding: calc(var(--safe-t) + 24px) 14px calc(var(--safe-b) + 16px) calc(var(--safe-l) + 14px);
         }
-        .sidebar.active { transform: translateX(0); visibility: visible; transition-delay: 0s; }
-        #main-content::after {
-            content: ""; position: fixed; inset: 0; z-index: 999; background: rgba(0, 0, 0, 0.4);
-            opacity: 0; pointer-events: none; transition: opacity 0.3s var(--ease-out);
-        }
-        #main-content:has(.sidebar.active)::after { opacity: 1; pointer-events: auto; }
-
+        .brand { display: flex; align-items: center; gap: 10px; padding: 0 10px 24px; font-size: 15px; font-weight: 700; letter-spacing: -0.02em; }
+        .brand-mark { width: 10px; height: 10px; border-radius: 50%; background: #faff00; flex: none; }
+        .nav { flex: 1; min-height: 0; overflow-y: auto; display: flex; flex-direction: column; gap: 2px; scrollbar-width: none; }
+        .nav::-webkit-scrollbar { display: none; }
         .sidebar-item {
-            padding: 12px 16px; margin-bottom: 2px; border-radius: 12px; font-size: 17px; font-weight: 500; letter-spacing: -0.01em;
-            opacity: 0.72; cursor: pointer; overflow-wrap: anywhere; transition: background-color 0.15s, opacity 0.15s;
+            padding: 9px 12px; border-radius: 9px; font-size: 13px; font-weight: 500; color: var(--text-2); cursor: pointer;
+            overflow-wrap: anywhere; transition: background-color 0.15s, color 0.15s;
         }
         .sidebar-item:active { background: var(--fill); }
-        .sidebar-item.active { opacity: 1; background: var(--fill); }
-        .sidebar-item.danger { color: var(--danger); opacity: 1; margin-top: 12px; }
-        @media (hover: hover) and (pointer: fine) { .sidebar-item:hover { opacity: 1; background: var(--fill); } }
-
-        .top-right-controls {
-            position: fixed; top: calc(var(--safe-t) + 14px); right: calc(var(--safe-r) + 14px); z-index: 100;
-            display: flex; flex-direction: column; align-items: flex-end; gap: 8px; padding: 10px 12px; box-sizing: border-box;
-            max-width: min(280px, calc(100vw - 88px)); border-radius: 18px; border: 1px solid var(--line);
-            background: var(--sidebar-bg); -webkit-backdrop-filter: blur(20px) saturate(180%); backdrop-filter: blur(20px) saturate(180%);
+        .sidebar-item.active { background: var(--fill); color: var(--text-color); }
+        #nav-exit { margin-top: auto; }
+        @media (hover: hover) and (pointer: fine) {
+            .sidebar-item:hover { background: var(--fill); color: var(--text-color); }
+            #nav-exit:hover { color: var(--danger); }
         }
-        #clock { font-size: 15px; font-weight: 600; letter-spacing: -0.01em; font-variant-numeric: tabular-nums; color: var(--text-2); }
-        #hud { display: flex; flex-direction: column; align-items: flex-end; gap: 8px; max-width: 100%; }
-        .hud-line { font-size: 12px; font-weight: 500; color: var(--text-2); text-align: right; overflow-wrap: anywhere; }
+        .side-foot { border-top: 1px solid var(--line); padding: 14px 4px 0; display: flex; flex-direction: column; gap: 12px; }
+        #hud { display: flex; flex-direction: column; align-items: stretch; gap: 8px; }
+        .hud-line { font-size: 12px; line-height: 1.45; color: var(--text-2); overflow-wrap: anywhere; }
+        .foot-row { display: flex; align-items: center; justify-content: space-between; gap: 8px; }
+        #clock { font-size: 12px; font-weight: 500; color: var(--text-2); font-variant-numeric: tabular-nums; }
 
-        /* Botones (pastilla) */
+        .topbar { display: none; }
+        .menu-btn { width: 44px; height: 44px; border-radius: 10px; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 5px; cursor: pointer; }
+        .menu-btn .bar { width: 18px; height: 2px; border-radius: 1px; background: var(--text-color); transition: transform 0.35s var(--ease-drawer), opacity 0.2s; }
+        .menu-btn.open .bar:nth-child(1) { transform: translateY(7px) rotate(45deg); }
+        .menu-btn.open .bar:nth-child(2) { opacity: 0; transform: scaleX(0); }
+        .menu-btn.open .bar:nth-child(3) { transform: translateY(-7px) rotate(-45deg); }
+
+        /* ===== Botones ===== */
         .hud-btn, .fullscreen-btn, .modal-buttons button {
-            font-family: inherit; font-size: 13px; font-weight: 600; letter-spacing: -0.005em; white-space: nowrap;
-            color: var(--text-color); background: var(--fill); border: 0; border-radius: 980px; padding: 8px 14px; cursor: pointer;
+            font: 600 12px var(--font); white-space: nowrap; color: var(--text-color); background: var(--fill);
+            border: 0; border-radius: 9px; padding: 9px 14px; cursor: pointer;
             transition: transform 0.12s var(--ease-out), background-color 0.15s, opacity 0.15s;
         }
-        .hud-btn:active, .fullscreen-btn:active, .modal-buttons button:active { transform: scale(0.96); }
-        .hud-btn:disabled { opacity: 0.45; cursor: default; }
-        .modal-buttons button:last-child { background: var(--accent-ia); color: #fff; }
+        .hud-btn:active, .fullscreen-btn:active, .modal-buttons button:active { transform: scale(0.97); }
+        .hud-btn:disabled { opacity: 0.4; cursor: default; }
+        .hud-btn.primary, .modal-buttons button:last-child { background: var(--text-color); color: var(--bg-color); }
         @media (hover: hover) and (pointer: fine) {
-            .hud-btn:hover:not(:disabled), .fullscreen-btn:hover, .modal-buttons .btn-cancel:hover { background: var(--fill-on); }
+            .hud-btn:hover:not(:disabled):not(.primary), .fullscreen-btn:hover, .modal-buttons .btn-cancel:hover { background: var(--fill-on); }
+            .hud-btn.primary:hover:not(:disabled), .modal-buttons button:last-child:hover { opacity: 0.88; }
         }
 
-        /* Secciones */
+        /* ===== Secciones ===== */
         .section {
-            display: none; position: relative; z-index: 50; flex-direction: column; align-items: center; height: 100%;
-            overflow-y: auto; overscroll-behavior: contain; box-sizing: border-box; scrollbar-width: none;
-            padding: calc(var(--safe-t) + 76px) 24px 0;
+            display: none; height: 100%; box-sizing: border-box; overflow-y: auto; overscroll-behavior: contain; scrollbar-width: none;
+            padding: calc(var(--safe-t) + 48px) 40px 0;
         }
         .section::-webkit-scrollbar { display: none; }
-        .section.active { display: flex; animation: enter 0.32s var(--ease-out) both; }
-        .main-title {
-            margin: 0 0 28px; font-size: clamp(32px, 5vw, 48px); font-weight: 700; letter-spacing: -0.035em; line-height: 1.05;
-            text-align: center; text-wrap: balance; overflow-wrap: anywhere;
+        .section.active { display: block; animation: enter 0.35s var(--ease-out); }
+        .section > * { max-width: 1080px; margin-left: auto; margin-right: auto; }
+        .main-title { margin-top: 0; margin-bottom: 28px; font-size: 28px; font-weight: 700; letter-spacing: -0.03em; line-height: 1.15; overflow-wrap: anywhere; }
+        .page-sub { margin-top: -22px; margin-bottom: 28px; color: var(--text-2); font-size: 14px; }
+        .toolbar { margin-bottom: 20px; }
+        .search {
+            width: 100%; max-width: 320px; box-sizing: border-box; padding: 10px 14px; background: var(--fill); border: 1px solid transparent;
+            border-radius: 10px; color: var(--text-color); font-size: 13px; outline: none; transition: border-color 0.2s, background-color 0.2s;
         }
+        .search::placeholder { color: var(--text-2); }
+        .search:focus { border-color: var(--line-strong); }
+        .empty { color: var(--text-2); text-align: center; margin: 32px auto; }
 
         .games-container {
-            display: grid; grid-template-columns: repeat(auto-fill, minmax(min(100%, 190px), 1fr)); gap: 12px;
-            width: 100%; max-width: 1040px; padding-bottom: calc(var(--safe-b) + 96px);
+            display: grid; grid-template-columns: repeat(auto-fill, minmax(min(100%, 180px), 1fr)); gap: 10px;
+            padding-bottom: calc(var(--safe-b) + 80px);
         }
         .game-card {
-            min-height: 88px; padding: 20px 18px; box-sizing: border-box; display: flex; align-items: flex-end; min-width: 0;
-            background: var(--card-bg); border: 1px solid var(--line); border-radius: 18px; cursor: pointer;
+            min-width: 0; min-height: 92px; padding: 16px 14px; box-sizing: border-box; display: flex; align-items: center; justify-content: center;
+            text-align: center; background: var(--card-bg); border: 1px solid var(--line); border-radius: 14px; cursor: pointer;
             transition: transform 0.2s var(--ease-out), border-color 0.2s, background-color 0.2s;
+            animation: rise 0.4s var(--ease-out) backwards; animation-delay: calc(var(--i, 0) * 18ms);
         }
-        .game-card:active { transform: scale(0.97); transition-duration: 0.1s; }
-        @media (hover: hover) and (pointer: fine) { .game-card:hover { transform: translateY(-2px); border-color: var(--line-strong); } }
         .game-card h3 {
-            margin: 0; font-size: 15px; font-weight: 600; letter-spacing: -0.01em; line-height: 1.25; overflow-wrap: anywhere;
+            margin: 0; font-size: 13px; font-weight: 600; line-height: 1.35; text-align: center; overflow-wrap: anywhere;
             display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden;
         }
+        .game-card:active { transform: scale(0.98); transition-duration: 0.1s; }
+        @media (hover: hover) and (pointer: fine) { .game-card:hover { border-color: var(--line-strong); background: var(--fill); } }
         .game-card.add-card { background: transparent; border-style: dashed; color: var(--text-2); }
         .game-card.custom-card { position: relative; }
         .delete-custom {
-            position: absolute; top: 8px; right: 8px; width: 24px; height: 24px; border-radius: 50%; border: 0; padding: 0;
-            background: var(--fill); color: var(--text-color); font-size: 11px; cursor: pointer; opacity: 0; transition: opacity 0.15s;
+            position: absolute; top: 8px; right: 8px; width: 22px; height: 22px; padding: 0; border: 0; border-radius: 50%;
+            background: var(--fill); color: var(--text-color); font-size: 10px; cursor: pointer; opacity: 0; transition: opacity 0.15s;
         }
         .custom-card:hover .delete-custom, .delete-custom:focus-visible { opacity: 1; }
         @media (hover: none) { .delete-custom { opacity: 0.7; } }
 
-        /* Ventana del juego */
-        body.game-open::after {
-            content: ""; position: fixed; inset: 0; z-index: 4900; background: rgba(0, 0, 0, 0.5);
-            -webkit-backdrop-filter: blur(10px); backdrop-filter: blur(10px); animation: fade 0.25s var(--ease-out);
-        }
+        /* ===== Ventana de juego ===== */
+        body.game-open::after { content: ""; position: fixed; inset: 0; z-index: 4900; background: rgba(0, 0, 0, 0.6); animation: fade 0.25s var(--ease-out); }
         #game-window {
-            position: fixed; top: 50%; left: 50%; width: min(94vw, 1400px); height: 88%; z-index: 5000; display: none;
-            flex-direction: column; background: #000; border: 1px solid var(--line); border-radius: 20px; overflow: hidden;
-            box-shadow: var(--shadow); opacity: 0; transform: translate(-50%, -50%) scale(0.96);
-            transition: opacity 0.28s var(--ease-out), transform 0.28s var(--ease-out);
+            position: fixed; top: 50%; left: 50%; width: min(96vw, 1400px); height: 90%; z-index: 5000; display: none; flex-direction: column;
+            background: #000; border: 1px solid var(--line); border-radius: 14px; overflow: hidden; box-shadow: var(--shadow);
+            opacity: 0; transform: translate(-50%, -50%) scale(0.97); transition: opacity 0.25s var(--ease-out), transform 0.25s var(--ease-out);
         }
-        @supports (height: 100dvh) { #game-window { height: 88dvh; } }
+        @supports (height: 100dvh) { #game-window { height: 90dvh; } }
         #game-window.active { display: flex; opacity: 1; transform: translate(-50%, -50%) scale(1); }
         .game-header {
-            --text-color: #f5f5f7; --fill: rgba(120, 120, 128, 0.32); --fill-on: rgba(255, 255, 255, 0.2);
-            color: #f5f5f7; width: 100%; height: 52px; padding: 0 12px 0 16px; box-sizing: border-box; background: #1c1c1e;
-            display: flex; justify-content: space-between; align-items: center;
+            --text-color: #ededef; --bg-color: #111113; --fill: rgba(255, 255, 255, 0.08); --fill-on: rgba(255, 255, 255, 0.14);
+            height: 46px; padding: 0 10px 0 16px; box-sizing: border-box; display: flex; align-items: center; gap: 10px;
+            background: #111113; color: #ededef; border-bottom: 1px solid rgba(255, 255, 255, 0.08);
         }
+        #game-title { flex: 1; min-width: 0; font-size: 12px; font-weight: 500; color: #8b8b92; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
         .close-x {
-            width: 32px; height: 32px; padding: 0; border: 0; border-radius: 50%; display: grid; place-items: center;
-            background: var(--fill); color: var(--text-color); font-size: 14px; cursor: pointer; transition: transform 0.12s var(--ease-out), background-color 0.15s;
+            width: 30px; height: 30px; padding: 0; border: 0; border-radius: 8px; display: grid; place-items: center; cursor: pointer;
+            background: var(--fill); color: var(--text-color); font-size: 12px; transition: transform 0.12s var(--ease-out), background-color 0.15s;
         }
-        .close-x:active { transform: scale(0.92); }
+        .close-x:active { transform: scale(0.94); }
         @media (hover: hover) and (pointer: fine) { .close-x:hover { background: var(--danger); } }
-        #game-iframe { width: 100%; height: calc(100% - 52px); border: none; }
+        #game-iframe { width: 100%; height: calc(100% - 46px); border: none; }
 
-        /* Ventanas modales */
+        /* ===== Modales y aviso ===== */
         #add-modal, #auth-modal {
-            position: fixed; inset: 0; z-index: 6000; display: none; align-items: center; justify-content: center;
-            padding: 24px; box-sizing: border-box; background: rgba(0, 0, 0, 0.45);
-            -webkit-backdrop-filter: blur(12px); backdrop-filter: blur(12px);
+            position: fixed; inset: 0; z-index: 6000; display: none; align-items: center; justify-content: center; padding: 24px;
+            box-sizing: border-box; background: rgba(0, 0, 0, 0.5); -webkit-backdrop-filter: blur(6px); backdrop-filter: blur(6px);
         }
         #add-modal.active, #auth-modal.active { display: flex; animation: fade 0.2s var(--ease-out); }
         .modal-box {
             width: 100%; max-width: 380px; padding: 24px; box-sizing: border-box; display: flex; flex-direction: column; gap: 12px;
-            background: var(--sidebar-bg); -webkit-backdrop-filter: blur(30px) saturate(180%); backdrop-filter: blur(30px) saturate(180%);
-            border: 1px solid var(--line); border-radius: 22px; box-shadow: var(--shadow);
+            background: var(--sidebar-bg); border: 1px solid var(--line); border-radius: 16px; box-shadow: var(--shadow);
         }
         #add-modal.active .modal-box, #auth-modal.active .modal-box { animation: pop 0.24s var(--ease-out); }
-        .modal-box h2 { margin: 0 0 4px; font-size: 20px; font-weight: 700; letter-spacing: -0.02em; }
+        .modal-box h2 { margin: 0 0 4px; font-size: 16px; font-weight: 600; letter-spacing: -0.01em; }
         .modal-box input {
-            min-width: 0; background: var(--fill); border: 0; border-radius: 12px; color: var(--text-color);
-            font: 16px var(--font); padding: 12px 14px; outline: none; transition: box-shadow 0.2s;
+            min-width: 0; padding: 12px 14px; background: var(--fill); border: 1px solid transparent; border-radius: 9px;
+            color: var(--text-color); font-size: 16px; outline: none; transition: border-color 0.2s;
         }
         .modal-box input::placeholder { color: var(--text-2); }
-        .modal-box input:focus { box-shadow: 0 0 0 3px rgba(10, 132, 255, 0.35); }
-        .modal-error { color: var(--danger); font-size: 13px; min-height: 1em; }
-        .modal-buttons { display: flex; gap: 8px; justify-content: flex-end; flex-wrap: wrap; }
+        .modal-box input:focus { border-color: var(--line-strong); }
+        .modal-error { color: var(--danger); font-size: 12px; min-height: 1em; }
+        .modal-buttons { display: flex; flex-wrap: wrap; justify-content: flex-end; gap: 8px; }
 
         #arcade-toast {
             position: fixed; bottom: calc(var(--safe-b) + 24px); left: 50%; z-index: 7000; max-width: min(92vw, 420px);
-            padding: 10px 18px; border-radius: 980px; border: 1px solid var(--line); text-align: center; box-shadow: var(--shadow);
-            background: var(--sidebar-bg); -webkit-backdrop-filter: blur(20px) saturate(180%); backdrop-filter: blur(20px) saturate(180%);
-            color: var(--text-color); font-size: 14px; font-weight: 500; opacity: 0; pointer-events: none;
-            transform: translateX(-50%) translateY(12px); transition: opacity 0.25s var(--ease-out), transform 0.25s var(--ease-out);
+            padding: 10px 16px; border-radius: 10px; text-align: center; background: var(--text-color); color: var(--bg-color);
+            font-size: 13px; font-weight: 500; box-shadow: var(--shadow); opacity: 0; pointer-events: none;
+            transform: translateX(-50%) translateY(10px); transition: opacity 0.25s var(--ease-out), transform 0.25s var(--ease-out);
         }
         #arcade-toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
 
-        @media (max-width: 640px) {
-            #clock { display: none; }
-            .section { padding: calc(var(--safe-t) + 132px) 16px 0; }
+        /* ===== Escritorio / móvil ===== */
+        @media (min-width: 900px) { #main-content { padding-left: var(--side-w); } }
+        @media (max-width: 899px) {
+            .topbar {
+                position: fixed; top: 0; left: 0; right: 0; z-index: 1001; display: flex; align-items: center; gap: 4px;
+                height: calc(var(--safe-t) + 56px); box-sizing: border-box; padding: var(--safe-t) calc(var(--safe-r) + 16px) 0 calc(var(--safe-l) + 8px);
+                background: var(--sidebar-bg); border-bottom: 1px solid var(--line);
+            }
+            .topbar-title { font-size: 15px; font-weight: 700; letter-spacing: -0.02em; }
+            .brand { display: none; }
+            .sidebar {
+                width: min(300px, 84vw); padding-top: calc(var(--safe-t) + 72px); transform: translateX(-102%); visibility: hidden;
+                transition: transform 0.34s var(--ease-drawer), visibility 0s 0.34s;
+            }
+            .sidebar.active { transform: translateX(0); visibility: visible; transition-delay: 0s; }
+            #main-content::after {
+                content: ""; position: fixed; inset: 0; z-index: 999; background: rgba(0, 0, 0, 0.45); opacity: 0; pointer-events: none;
+                transition: opacity 0.3s var(--ease-out);
+            }
+            #main-content:has(.sidebar.active)::after { opacity: 1; pointer-events: auto; }
+            .section { padding: calc(var(--safe-t) + 80px) 16px 0; }
+            .main-title { font-size: 24px; }
+            .search { font-size: 16px; max-width: none; }
         }
         @media (prefers-reduced-motion: reduce) {
-            .section.active, #add-modal.active .modal-box, #auth-modal.active .modal-box { animation-name: fade; }
-            .game-card:hover { transform: none; }
+            .section.active, .game-card, #add-modal.active .modal-box, #auth-modal.active .modal-box { animation-name: fade; }
             .sidebar, .menu-btn .bar { transition-duration: 0.01ms; }
         }
     </style>
@@ -283,16 +281,18 @@
 
     <!-- PANTALLA DE BLOQUEO -->
     <div id="lock-screen">
+        <span class="lock-mark"></span>
         <h1 class="lock-title">UBGames.88</h1>
-        <p class="lock-hint">Introduce el código</p>
+        <p class="lock-hint">Introduce el código para continuar</p>
         <input type="password" id="lock-input" placeholder="••••••" autocomplete="off" autofocus>
     </div>
 
     <!-- VENTANA FLOTANTE DEL JUEGO -->
     <div id="game-window">
         <div class="game-header">
+            <span id="game-title"></span>
             <button class="fullscreen-btn" onclick="toggleFullscreen()">Pantalla completa</button>
-            <button class="close-x" onclick="closeGame()">✕</button>
+            <button class="close-x" onclick="closeGame()" aria-label="Cerrar">✕</button>
         </div>
         <iframe id="game-iframe" src=""></iframe>
     </div>
@@ -331,31 +331,39 @@
 
     <!-- CONTENIDO PRINCIPAL -->
     <div id="main-content">
-        <!-- Menú hamburguesa -->
-        <div class="menu-btn" id="hamburger-menu" onclick="toggleSidebar()">
-            <div class="bar"></div>
-            <div class="bar"></div>
-            <div class="bar"></div>
-        </div>
+        <header class="topbar">
+            <div class="menu-btn" id="hamburger-menu" onclick="toggleSidebar()" aria-label="Menú">
+                <div class="bar"></div>
+                <div class="bar"></div>
+                <div class="bar"></div>
+            </div>
+            <span class="topbar-title">UBGames.88</span>
+        </header>
 
-        <!-- Barra lateral (rewards.js añade aquí "Misiones y logros", "Tienda" y "Anticipado") -->
-        <div class="sidebar" id="sidebar">
-            <div class="sidebar-item active" id="btn-games" onclick="showSection('games')">Juegos</div>
-            <div class="sidebar-item" id="btn-apps" onclick="showSection('apps')">Apps</div>
-            <div class="sidebar-item" id="btn-mypages" onclick="showSection('mypages')">Mis páginas</div>
-            <div class="sidebar-item danger" onclick="logout()">Salir</div>
-        </div>
+        <!-- Barra lateral (rewards.js añade: Misiones y logros, Tienda, Ajustes, Anticipado) -->
+        <aside class="sidebar" id="sidebar">
+            <div class="brand"><span class="brand-mark"></span>UBGames.88</div>
+            <nav class="nav" id="nav">
+                <div class="sidebar-item active" id="btn-games" onclick="showSection('games')">Juegos</div>
+                <div class="sidebar-item" id="btn-apps" onclick="showSection('apps')">Apps</div>
+                <div class="sidebar-item" id="btn-mypages" onclick="showSection('mypages')">Mis páginas</div>
+                <div class="sidebar-item" id="nav-exit" onclick="logout()">Salir</div>
+            </nav>
+            <div class="side-foot">
+                <div id="hud"></div>
+                <div class="foot-row">
+                    <span id="clock">00:00:00</span>
+                    <button class="theme-toggle hud-btn" onclick="toggleTheme()">Modo claro</button>
+                </div>
+            </div>
+        </aside>
 
-        <!-- Reloj y tema -->
-        <div class="top-right-controls">
-            <div id="clock">00:00:00</div>
-            <button class="theme-toggle hud-btn" onclick="toggleTheme()">Modo claro</button>
-            <div id="hud"></div>
-        </div>
 
         <!-- SECCIÓN: JUEGOS -->
         <section id="games-section" class="section active">
-            <h1 class="main-title">UBGames.88</h1>
+            <h1 class="main-title">Juegos</h1>
+            <p class="page-sub">Elige un juego y empieza a jugar.</p>
+            <div class="toolbar"><input type="search" id="search" class="search" placeholder="Buscar juegos" autocomplete="off"></div>
             <div class="games-container">
                 <div class="game-card" onclick="openGame('https://geometrylitepc.io/')"><h3>Geometry Dash</h3></div>
                 <div class="game-card" onclick="openGame('https://survival-race.io/')"><h3>Survival Race</h3></div>
@@ -397,11 +405,13 @@
                 <!-- Huecos personalizados (de pago): los pinta rewards.js -->
                 <div id="custom-games" style="display: contents;"></div>
             </div>
+            <p class="empty" id="search-empty" hidden>Sin resultados.</p>
         </section>
 
         <!-- SECCIÓN: APPS -->
         <section id="apps-section" class="section">
             <h1 class="main-title">Apps</h1>
+            <p class="page-sub">Accesos directos a tus servicios.</p>
             <div class="games-container">
                 <div class="game-card" onclick="window.open('https://youtube.com', '_blank')"><h3>YouTube</h3></div>
                 <div class="game-card" onclick="window.open('https://spotify.com', '_blank')"><h3>Spotify</h3></div>
@@ -412,6 +422,7 @@
         <!-- SECCIÓN: MIS PÁGINAS -->
         <section id="mypages-section" class="section">
             <h1 class="main-title">Mis páginas</h1>
+            <p class="page-sub">Tus proyectos.</p>
             <div class="games-container">
                 <div class="game-card" onclick="window.open('https://ivooubi.github.io/todolist/', '_blank')"><h3>To Do List</h3></div>
                 <div class="game-card" onclick="window.open('https://ivooubi.github.io/clicker/', '_blank')"><h3>Clicker</h3></div>
@@ -727,7 +738,7 @@
             if (document.getElementById('btn-' + id)) {
                 document.getElementById('btn-' + id).classList.add('active');
             }
-            toggleSidebar();
+            closeSidebar();
         }
 
         lockInput.addEventListener('input', (e) => {
@@ -754,6 +765,7 @@
 
         function openGame(url) {
             gameIframe.src = url;
+            try { document.getElementById('game-title').textContent = new URL(url).hostname.replace(/^www\./, ''); } catch (e) { }
             if (window.Arcade) Arcade.startGame(url);
             gameWindow.style.display = 'flex';
             document.body.classList.add('game-open');
@@ -795,6 +807,11 @@
             hamburger.classList.toggle('open');
         }
 
+        function closeSidebar() {
+            document.getElementById('sidebar').classList.remove('active');
+            hamburger.classList.remove('open');
+        }
+
         function applyTheme(light, save) {
             document.body.classList.toggle('light-mode', light);
             const b = document.querySelector('.theme-toggle');
@@ -822,7 +839,26 @@
         });
 
 
-            </script>
+        
+        /* ---------- Buscador y animación escalonada ---------- */
+        (function () {
+            document.querySelectorAll('.games-container').forEach((c) => {
+                Array.from(c.children).forEach((el, i) => el.style.setProperty('--i', Math.min(i, 24)));
+            });
+            const input = document.getElementById('search');
+            const none = document.getElementById('search-empty');
+            input.addEventListener('input', () => {
+                const q = input.value.trim().toLowerCase();
+                let shown = 0;
+                document.querySelectorAll('#games-section .game-card').forEach((c) => {
+                    const ok = !q || (!c.classList.contains('add-card') && c.textContent.toLowerCase().includes(q));
+                    c.style.display = ok ? '' : 'none';
+                    if (ok) shown++;
+                });
+                none.hidden = !q || shown > 0;
+            });
+        })();
+    </script>
 
     <!-- Sistema de recompensas: misiones, logros y tienda (requiere rewards.sql en Supabase) -->
     <script src="rewards.js"></script>
