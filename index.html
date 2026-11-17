@@ -102,13 +102,6 @@
         #main-content { opacity: 0; transition: opacity 0.5s; height: 100%; width: 100%; display: none; box-sizing: border-box; }
         #main-content.visible { opacity: 1; display: block; }
 
-        .sidebar {
-            position: fixed; top: 0; bottom: 0; left: 0; width: var(--side-w); z-index: 1000; box-sizing: border-box;
-            display: flex; flex-direction: column; background: var(--sidebar-bg); border-right: 1px solid var(--line);
-            padding: calc(var(--safe-t) + 24px) 14px calc(var(--safe-b) + 16px) calc(var(--safe-l) + 14px);
-        }
-        .brand { display: flex; align-items: center; gap: 10px; padding: 0 10px 24px; font-size: 15px; font-weight: 700; letter-spacing: -0.02em; }
-        .brand-mark { width: 10px; height: 10px; border-radius: 50%; background: #faff00; flex: none; }
         .nav { flex: 1; min-height: 0; overflow-y: auto; display: flex; flex-direction: column; gap: 2px; scrollbar-width: none; }
         .nav::-webkit-scrollbar { display: none; }
         .sidebar-item {
@@ -117,10 +110,8 @@
         }
         .sidebar-item:active { background: var(--fill); }
         .sidebar-item.active { background: var(--fill); color: var(--text-color); }
-        #nav-exit { margin-top: auto; }
         @media (hover: hover) and (pointer: fine) {
             .sidebar-item:hover { background: var(--fill); color: var(--text-color); }
-            #nav-exit:hover { color: var(--danger); }
         }
         .side-foot { border-top: 1px solid var(--line); padding: 14px 4px 0; display: flex; flex-direction: column; gap: 12px; }
         #hud { display: flex; flex-direction: column; align-items: stretch; gap: 8px; }
@@ -128,7 +119,6 @@
         .foot-row { display: flex; align-items: center; justify-content: space-between; gap: 8px; }
         #clock { font-size: 12px; font-weight: 500; color: var(--text-2); font-variant-numeric: tabular-nums; }
 
-        .topbar { display: none; }
         .menu-btn { width: 44px; height: 44px; border-radius: 10px; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 5px; cursor: pointer; }
         .menu-btn .bar { width: 18px; height: 2px; border-radius: 1px; background: var(--text-color); transition: transform 0.35s var(--ease-drawer), opacity 0.2s; }
         .menu-btn.open .bar:nth-child(1) { transform: translateY(7px) rotate(45deg); }
@@ -152,7 +142,7 @@
         /* ===== Secciones ===== */
         .section {
             display: none; height: 100%; box-sizing: border-box; overflow-y: auto; overscroll-behavior: contain; scrollbar-width: none;
-            padding: calc(var(--safe-t) + 48px) 40px 0;
+            padding: calc(var(--safe-t) + 80px) 40px 0;
         }
         .section::-webkit-scrollbar { display: none; }
         .section.active { display: block; animation: enter 0.35s var(--ease-out); }
@@ -245,31 +235,59 @@
         }
         #arcade-toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
 
-        /* ===== Escritorio / móvil ===== */
-        @media (min-width: 900px) { #main-content { padding-left: var(--side-w); } }
+        /* ===== Barra superior y panel lateral (se abre y se cierra) ===== */
+        .topbar {
+            position: fixed; top: 0; left: 0; right: 0; z-index: 1001; display: flex; align-items: center; gap: 4px;
+            height: calc(var(--safe-t) + 56px); box-sizing: border-box; padding: var(--safe-t) calc(var(--safe-r) + 16px) 0 calc(var(--safe-l) + 8px);
+            background: var(--sidebar-bg); border-bottom: 1px solid var(--line);
+        }
+        .topbar-title { font-size: 15px; font-weight: 700; letter-spacing: -0.02em; }
+        .sidebar {
+            position: fixed; top: 0; bottom: 0; left: 0; width: min(290px, 84vw); z-index: 1000; box-sizing: border-box;
+            display: flex; flex-direction: column; background: var(--sidebar-bg); border-right: 1px solid var(--line);
+            padding: calc(var(--safe-t) + 72px) 12px calc(var(--safe-b) + 16px) calc(var(--safe-l) + 12px);
+            transform: translateX(-102%); visibility: hidden; transition: transform 0.34s var(--ease-drawer), visibility 0s 0.34s;
+        }
+        .sidebar.active { transform: translateX(0); visibility: visible; transition-delay: 0s; }
+        #main-content::after {
+            content: ""; position: fixed; inset: 0; z-index: 999; background: rgba(0, 0, 0, 0.45); opacity: 0; pointer-events: none;
+            transition: opacity 0.3s var(--ease-out);
+        }
+        #main-content:has(.sidebar.active)::after { opacity: 1; pointer-events: auto; }
+
+        /* Botón Salir */
+        .exit-btn {
+            display: flex; align-items: center; justify-content: center; gap: 8px; width: 100%; padding: 11px 14px; cursor: pointer;
+            background: transparent; color: var(--danger); border: 1px solid var(--line); border-radius: 10px; font: 600 13px var(--font);
+            transition: background-color 0.2s, color 0.2s, border-color 0.2s, transform 0.12s var(--ease-out);
+        }
+        .exit-btn svg { flex: none; transition: transform 0.25s var(--ease-out); }
+        .exit-btn:active { transform: scale(0.97); }
+        @media (hover: hover) and (pointer: fine) {
+            .exit-btn:hover { background: var(--danger); border-color: var(--danger); color: #fff; }
+            .exit-btn:hover svg { transform: translateX(3px); }
+        }
+
+        /* Proxy */
+        #proxy-section.active { display: flex; flex-direction: column; padding-bottom: 16px; }
+        #proxy-section > * { max-width: none; }
+        .proxy-head { display: flex; align-items: center; justify-content: space-between; gap: 12px; margin-bottom: 16px; width: 100%; }
+        .proxy-head .main-title { margin: 0; }
+        .proxy-actions { display: flex; gap: 8px; }
+        a.hud-btn { display: inline-block; text-decoration: none; }
+        .proxy-frame { position: relative; flex: 1; min-height: 0; width: 100%; border: 1px solid var(--line); border-radius: 14px; overflow: hidden; background: var(--card-bg); }
+        .proxy-frame iframe { position: absolute; inset: 0; width: 100%; height: 100%; border: 0; opacity: 0; transition: opacity 0.3s; }
+        .proxy-frame.ready iframe { opacity: 1; }
+        .proxy-loading { position: absolute; inset: 0; display: grid; place-items: center; color: var(--text-2); font-size: 13px; }
+        .proxy-frame.ready .proxy-loading { display: none; }
+
         @media (max-width: 899px) {
-            .topbar {
-                position: fixed; top: 0; left: 0; right: 0; z-index: 1001; display: flex; align-items: center; gap: 4px;
-                height: calc(var(--safe-t) + 56px); box-sizing: border-box; padding: var(--safe-t) calc(var(--safe-r) + 16px) 0 calc(var(--safe-l) + 8px);
-                background: var(--sidebar-bg); border-bottom: 1px solid var(--line);
-            }
-            .topbar-title { font-size: 15px; font-weight: 700; letter-spacing: -0.02em; }
-            .brand { display: none; }
-            .sidebar {
-                width: min(300px, 84vw); padding-top: calc(var(--safe-t) + 72px); transform: translateX(-102%); visibility: hidden;
-                transition: transform 0.34s var(--ease-drawer), visibility 0s 0.34s;
-            }
-            .sidebar.active { transform: translateX(0); visibility: visible; transition-delay: 0s; }
-            #main-content::after {
-                content: ""; position: fixed; inset: 0; z-index: 999; background: rgba(0, 0, 0, 0.45); opacity: 0; pointer-events: none;
-                transition: opacity 0.3s var(--ease-out);
-            }
-            #main-content:has(.sidebar.active)::after { opacity: 1; pointer-events: auto; }
             .section { padding: calc(var(--safe-t) + 80px) 16px 0; }
+            #proxy-section.active { padding-bottom: 12px; }
             .main-title { font-size: 24px; }
             .search { font-size: 16px; max-width: none; }
         }
-        @media (prefers-reduced-motion: reduce) {
+                @media (prefers-reduced-motion: reduce) {
             .section.active, .game-card, #add-modal.active .modal-box, #auth-modal.active .modal-box { animation-name: fade; }
             .sidebar, .menu-btn .bar { transition-duration: 0.01ms; }
         }
@@ -340,14 +358,13 @@
             <span class="topbar-title">UBGames.88</span>
         </header>
 
-        <!-- Barra lateral (rewards.js añade: Misiones y logros, Tienda, Ajustes, Anticipado) -->
+        <!-- Panel lateral (rewards.js añade: Misiones y logros, Tienda, Inventario, Ajustes, Anticipado) -->
         <aside class="sidebar" id="sidebar">
-            <div class="brand"><span class="brand-mark"></span>UBGames.88</div>
             <nav class="nav" id="nav">
                 <div class="sidebar-item active" id="btn-games" onclick="showSection('games')">Juegos</div>
                 <div class="sidebar-item" id="btn-apps" onclick="showSection('apps')">Apps</div>
+                <div class="sidebar-item" id="btn-proxy" onclick="showSection('proxy')">Proxy</div>
                 <div class="sidebar-item" id="btn-mypages" onclick="showSection('mypages')">Mis páginas</div>
-                <div class="sidebar-item" id="nav-exit" onclick="logout()">Salir</div>
             </nav>
             <div class="side-foot">
                 <div id="hud"></div>
@@ -355,6 +372,10 @@
                     <span id="clock">00:00:00</span>
                     <button class="theme-toggle hud-btn" onclick="toggleTheme()">Modo claro</button>
                 </div>
+                <button class="exit-btn" id="nav-exit" onclick="logout()">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>
+                    <span>Salir</span>
+                </button>
             </div>
         </aside>
 
@@ -398,7 +419,6 @@
                 <div class="game-card" onclick="openGame('https://subwaysurfers-unblocked.gitlab.io/')"><h3>Subway Surfers</h3></div>
                 <div class="game-card" onclick="openGame('https://slope-unblocked-games.github.io/car.html')"><h3>Car Games</h3></div>
                 <div class="game-card" onclick="openGame('https://stickman-unblocked.github.io/')"><h3>Stickman Hook</h3></div>
-                <div class="game-card" onclick="openGame('https://cdn.jsdelivr.net/gh/lucideproxy/svg@latest/logo.svg#/')"><h3>LucideProxy</h3></div>
                 <div class="game-card" onclick="openGame('https://tyronegames.gitlab.io/category/trending.html')"><h3>TyroneGames</h3></div>
                 <div class="game-card" onclick="openGame('https://duckify.top/')"><h3>Duckify</h3></div>
 
@@ -416,6 +436,21 @@
                 <div class="game-card" onclick="window.open('https://youtube.com', '_blank')"><h3>YouTube</h3></div>
                 <div class="game-card" onclick="window.open('https://spotify.com', '_blank')"><h3>Spotify</h3></div>
                 <div class="game-card" onclick="window.open('http://msn.com/en-us/play', '_blank')"><h3>MSN Play</h3></div>
+            </div>
+        </section>
+
+        <!-- SECCIÓN: PROXY (abierto dentro de la página) -->
+        <section id="proxy-section" class="section">
+            <div class="proxy-head">
+                <h1 class="main-title">Proxy</h1>
+                <div class="proxy-actions">
+                    <button class="hud-btn" onclick="loadProxy(true)">Recargar</button>
+                    <a class="hud-btn" href="https://cdn.jsdelivr.net/gh/lucideproxy/svg@latest/logo.svg#/" target="_blank" rel="noopener noreferrer">Abrir aparte</a>
+                </div>
+            </div>
+            <div class="proxy-frame" id="proxy-wrap">
+                <span class="proxy-loading">Cargando…</span>
+                <iframe id="proxy-iframe" title="Proxy" allow="fullscreen" referrerpolicy="no-referrer"></iframe>
             </div>
         </section>
 
@@ -739,6 +774,7 @@
                 document.getElementById('btn-' + id).classList.add('active');
             }
             closeSidebar();
+            if (id === 'proxy') loadProxy(false);
         }
 
         lockInput.addEventListener('input', (e) => {
@@ -805,6 +841,21 @@
         function toggleSidebar() {
             document.getElementById('sidebar').classList.toggle('active');
             hamburger.classList.toggle('open');
+        }
+
+        /* ---------- Proxy: se carga al abrir la sección y queda abierto ---------- */
+        const PROXY_URL = 'https://cdn.jsdelivr.net/gh/lucideproxy/svg@latest/logo.svg#/';
+        const proxyFrame = document.getElementById('proxy-iframe');
+        const proxyWrap = document.getElementById('proxy-wrap');
+        proxyFrame.addEventListener('load', () => {
+            if (proxyFrame.src && !proxyFrame.src.startsWith('about:')) proxyWrap.classList.add('ready');
+        });
+        function loadProxy(force) {
+            if (proxyFrame.dataset.loaded && !force) return;
+            proxyFrame.dataset.loaded = '1';
+            proxyWrap.classList.remove('ready');
+            proxyFrame.src = 'about:blank';
+            setTimeout(() => { proxyFrame.src = PROXY_URL; }, 30);
         }
 
         function closeSidebar() {
