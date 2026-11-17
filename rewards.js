@@ -51,6 +51,8 @@
 .r-card{min-width:0;background:var(--card-bg);border:1px solid var(--line);border-radius:14px;padding:16px 18px;display:flex;flex-direction:column;gap:12px;animation:rise .4s var(--ease-out) backwards}
 .r-row{display:flex;justify-content:space-between;align-items:center;gap:12px;font-size:13px;min-width:0}
 .r-card>.r-row:last-child{margin-top:auto}
+.r-h{font-size:13px;font-weight:600;color:var(--text-2);margin:28px 0 12px}
+.r-h:first-child{margin-top:0}
 .r-row strong{font-weight:600;min-width:0;overflow-wrap:anywhere}
 .r-reward{font-size:12px;font-weight:600;color:var(--text-2);white-space:nowrap}
 .r-sub{font-size:12px;color:var(--text-2);line-height:1.5;overflow-wrap:anywhere}
@@ -80,12 +82,11 @@ body.layout-glass #games-section .game-card{background:rgba(128,128,128,.14);-we
 
     /* ---------- Sidebar y secciones ---------- */
     const nav = $('nav');
-    const logoutItem = $('nav-exit');
     function addSide(id, label) {
         const d = el('div', 'sidebar-item', label);
         d.id = 'btn-' + id;
         d.onclick = () => showSection(id);
-        nav.insertBefore(d, logoutItem);
+        nav.appendChild(d);
     }
     function addSection(id, title) {
         const s = el('section', 'section');
@@ -98,10 +99,12 @@ body.layout-glass #games-section .game-card{background:rgba(128,128,128,.14);-we
     }
     addSide('rewards', 'Misiones y logros');
     addSide('shop', 'Tienda');
+    addSide('inventory', 'Inventario');
     addSide('settings', 'Ajustes');
     const rBody = addSection('rewards', 'Misiones y logros');
     const sBody = addSection('shop', 'Tienda');
     const eBody = addSection('early', 'Acceso anticipado');
+    const invBody = addSection('inventory', 'Inventario');
     const setBody = addSection('settings', 'Ajustes');
     let earlyBtn = false;
 
@@ -141,7 +144,7 @@ body.layout-glass #games-section .game-card{background:rgba(128,128,128,.14);-we
     function say(body, text) { body.replaceChildren(el('p', 'r-empty', text)); }
     async function load() {
         const run = ++loadRun;
-        if (!state) [rBody, sBody, eBody].forEach((b) => say(b, 'Cargando…'));
+        if (!state) [rBody, sBody, eBody, invBody].forEach((b) => say(b, 'Cargando…'));
         try {
             const { data: { session } } = await sb.auth.getSession();
             hasSession = !!session;
@@ -164,7 +167,7 @@ body.layout-glass #games-section .game-card{background:rgba(128,128,128,.14);-we
             if (run !== loadRun) return;
             console.warn('rewards:', e);
             state = null;
-            [rBody, sBody, eBody].forEach((b) => say(b, 'No se pudo cargar: ' + (e.message || e) + ' (¿ejecutaste rewards.sql?)'));
+            [rBody, sBody, eBody, invBody].forEach((b) => say(b, 'No se pudo cargar: ' + (e.message || e) + ' (¿ejecutaste rewards.sql?)'));
             renderSettings();
             renderCustomPages();
         }
@@ -242,11 +245,8 @@ body.layout-glass #games-section .game-card{background:rgba(128,128,128,.14);-we
         if (!its.length) grid.append(el('p', 'r-empty', 'No hay artículos en esta categoría.'));
         its.forEach((i) => {
             const c = el('div', 'r-card');
-            if (i.kind === 'background') {
-                const s = el('div', 'r-swatch');
-                s.style.background = i.data.css || '#000';
-                c.append(s);
-            }
+            const sw = swatch(i);
+            if (sw) c.append(sw);
             c.append(el('strong', null, i.name), el('div', 'r-sub', i.description));
             const row = el('div', 'r-row');
             row.append(el('span', 'r-reward', i.owned ? 'Comprado' : i.price + ' 🪙'));
@@ -364,6 +364,64 @@ body.layout-glass #games-section .game-card{background:rgba(128,128,128,.14);-we
         load();
     };
 
+    /* ---------- Inventario (solo lo que tienes) ---------- */
+    function swatch(i) {
+        if (i.kind === 'background') {
+            const s = el('div', 'r-swatch');
+            s.style.background = i.data.css || '#000';
+            return s;
+        }
+        if (i.kind === 'accent') {
+            const s = el('div', 'r-swatch');
+            s.style.height = '28px';
+            s.style.background = /^#[0-9a-fA-F]{6}$/.test(i.data.color || '') ? i.data.color : '#888';
+            return s;
+        }
+        return null;
+    }
+    function renderInventory() {
+        invBody.replaceChildren();
+        if (!state) { invBody.append(el('p', 'r-empty', hasSession ? 'No se pudo cargar tu inventario.' : 'Inicia sesión para ver tu inventario.')); return; }
+        const owned = state.items.filter((i) => i.owned);
+        const slots = state.slots || 0;
+        if (!owned.length && !slots) {
+            invBody.append(el('p', 'r-empty', 'Tu inventario está vacío. Lo que compres en la tienda aparecerá aquí.'));
+            const b = el('button', 'hud-btn primary', 'Ir a la tienda');
+            b.onclick = () => { tabS = 'background'; renderShop(); openSection('shop'); };
+            invBody.append(b);
+            return;
+        }
+        [['background', 'Fondos'], ['accent', 'Colores'], ['layout', 'Pantalla de juegos'], ['early_access', 'Acceso anticipado']].forEach(([k, label]) => {
+            const list = owned.filter((i) => i.kind === k);
+            if (!list.length) return;
+            invBody.append(el('h2', 'r-h', label));
+            const grid = el('div', 'r-shop');
+            list.forEach((i) => {
+                const c = el('div', 'r-card');
+                const sw = swatch(i);
+                if (sw) c.append(sw);
+                c.append(el('strong', null, i.name), el('div', 'r-sub', i.description));
+                const row = el('div', 'r-row');
+                row.append(el('span', 'r-reward', i.kind === 'early_access' ? 'Desbloqueado' : i.equipped ? 'En uso' : 'Disponible'));
+                const b = el('button', 'hud-btn' + (i.kind !== 'early_access' && !i.equipped ? ' primary' : ''),
+                    i.kind === 'early_access' ? 'Abrir' : i.equipped ? 'Quitar' : 'Equipar');
+                b.onclick = () => (i.kind === 'early_access' ? openSection('early') : equip(i, !i.equipped));
+                row.append(b);
+                c.append(row);
+                grid.append(c);
+            });
+            invBody.append(grid);
+        });
+        if (slots) {
+            const used = (state.pages || []).length;
+            invBody.append(el('h2', 'r-h', 'Huecos personalizados'));
+            const c = el('div', 'r-card');
+            c.append(el('strong', null, slots + (slots === 1 ? ' hueco' : ' huecos') + ' · ' + used + ' en uso'));
+            c.append(el('div', 'r-sub', 'Añade tus páginas desde la pantalla de juegos, en las tarjetas "+ Hueco libre".'));
+            invBody.append(c);
+        }
+    }
+
     /* ---------- Ajustes (cuenta) ---------- */
     function renderSettings() {
         setBody.replaceChildren();
@@ -449,7 +507,7 @@ body.layout-glass #games-section .game-card{background:rgba(128,128,128,.14);-we
         eBody.append(g);
     }
 
-    function render() { renderRewards(); renderShop(); renderEarly(); renderSettings(); renderCustomPages(); }
+    function render() { renderRewards(); renderShop(); renderEarly(); renderSettings(); renderCustomPages(); renderInventory(); }
 
     /* ---------- Acciones ---------- */
     async function after() { await load(); if (window.renderHud) window.renderHud(); }
@@ -515,7 +573,7 @@ body.layout-glass #games-section .game-card{background:rgba(128,128,128,.14);-we
     const showOrig = window.showSection;
     window.showSection = function (id) {
         showOrig(id);
-        if (['rewards', 'shop', 'early', 'settings'].includes(id)) load();
+        if (['rewards', 'shop', 'early', 'inventory', 'settings'].includes(id)) load();
     };
     let authTimer = null;
     sb.auth.onAuthStateChange(() => { clearTimeout(authTimer); authTimer = setTimeout(load, 300); });
