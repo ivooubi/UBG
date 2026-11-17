@@ -38,53 +38,54 @@
     /* ---------- Estilos ---------- */
     const style = el('style');
     style.textContent = `
-.r-body{width:100%;max-width:760px;padding-bottom:calc(env(safe-area-inset-bottom,0px) + 96px)}
-.r-tabs{display:flex;gap:2px;padding:3px;border-radius:12px;background:var(--fill);width:max-content;max-width:100%;margin:0 auto 18px;overflow-x:auto;scrollbar-width:none}
+.r-body{padding-bottom:calc(env(safe-area-inset-bottom,0px) + 80px)}
+.r-body>.r-card{max-width:520px}
+.r-tabs{display:flex;gap:22px;margin-bottom:20px;border-bottom:1px solid var(--line);overflow-x:auto;scrollbar-width:none}
 .r-tabs::-webkit-scrollbar{display:none}
-.r-tab{font:600 13px var(--font);letter-spacing:-.005em;white-space:nowrap;color:var(--text-color);background:transparent;border:0;border-radius:9px;padding:7px 14px;cursor:pointer;opacity:.7;touch-action:manipulation;transition:background-color .2s var(--ease-out),opacity .2s,transform .12s var(--ease-out)}
-.r-tab:active{transform:scale(.96)}
-.r-tab.on{background:var(--fill-on);opacity:1;box-shadow:0 1px 3px rgba(0,0,0,.18)}
-@media (hover:hover) and (pointer:fine){.r-tab:hover{opacity:1}}
-.r-stats{text-align:center;font-size:13px;color:var(--text-2);margin-bottom:16px;overflow-wrap:anywhere}
-.r-list{display:grid;gap:10px}
-.r-shop{display:grid;grid-template-columns:repeat(auto-fill,minmax(min(100%,220px),1fr));gap:12px}
-.r-card{min-width:0;background:var(--card-bg);border:1px solid var(--line);border-radius:18px;padding:16px 18px;display:flex;flex-direction:column;gap:12px}
-.r-row{display:flex;justify-content:space-between;align-items:center;gap:12px;font-size:15px;min-width:0}
-.r-row strong{font-weight:600;letter-spacing:-.01em;min-width:0;overflow-wrap:anywhere}
+.r-tab{font:600 13px var(--font);white-space:nowrap;color:var(--text-2);background:none;border:0;border-bottom:2px solid transparent;margin-bottom:-1px;padding:10px 2px;cursor:pointer;touch-action:manipulation;transition:color .2s,border-color .2s}
+.r-tab.on{color:var(--text-color);border-bottom-color:var(--text-color)}
+@media (hover:hover) and (pointer:fine){.r-tab:hover{color:var(--text-color)}}
+.r-stats{font-size:13px;color:var(--text-2);margin-bottom:16px;overflow-wrap:anywhere}
+.r-list{display:grid;grid-template-columns:repeat(auto-fill,minmax(min(100%,340px),1fr));gap:10px}
+.r-shop{display:grid;grid-template-columns:repeat(auto-fill,minmax(min(100%,220px),1fr));gap:10px}
+.r-card{min-width:0;background:var(--card-bg);border:1px solid var(--line);border-radius:14px;padding:16px 18px;display:flex;flex-direction:column;gap:12px;animation:rise .4s var(--ease-out) backwards}
+.r-row{display:flex;justify-content:space-between;align-items:center;gap:12px;font-size:13px;min-width:0}
+.r-card>.r-row:last-child{margin-top:auto}
+.r-row strong{font-weight:600;min-width:0;overflow-wrap:anywhere}
 .r-reward{font-size:12px;font-weight:600;color:var(--text-2);white-space:nowrap}
-.r-sub{font-size:13px;color:var(--text-2);line-height:1.4;overflow-wrap:anywhere}
-.r-bar{height:6px;border-radius:3px;background:var(--fill);overflow:hidden}
-.r-fill{height:100%;width:100%;background:var(--accent-ia);transform-origin:left;transition:transform .5s var(--ease-out);animation:r-grow .7s var(--ease-out) both}
+.r-sub{font-size:12px;color:var(--text-2);line-height:1.5;overflow-wrap:anywhere}
+.r-bar{height:4px;border-radius:2px;background:var(--fill);overflow:hidden}
+.r-fill{height:100%;width:100%;background:var(--accent-ia);transform-origin:left;transition:transform .5s var(--ease-out);animation:r-grow .7s var(--ease-out) backwards}
 @keyframes r-grow{from{transform:scaleX(0)}}
-.r-swatch{height:72px;border-radius:12px;border:1px solid var(--line)}
-.r-empty{grid-column:1/-1;text-align:center;color:var(--text-2);font-size:15px;margin:24px 0;overflow-wrap:anywhere}
-.r-input{flex:1;min-width:0;background:var(--fill);border:0;border-radius:12px;color:var(--text-color);font:16px var(--font);padding:10px 14px;outline:none;transition:box-shadow .2s}
-.r-input:focus{box-shadow:0 0 0 3px rgba(10,132,255,.35)}
+.r-swatch{height:64px;border-radius:9px;border:1px solid var(--line)}
+.r-empty{grid-column:1/-1;color:var(--text-2);font-size:13px;margin:24px 0;overflow-wrap:anywhere}
+.r-input{flex:1;min-width:0;background:var(--fill);border:1px solid transparent;border-radius:9px;color:var(--text-color);font-size:16px;padding:10px 14px;outline:none;transition:border-color .2s}
+.r-input:focus{border-color:var(--line-strong)}
 .r-secret{margin-top:18px}
 .r-notifs{position:fixed;top:calc(env(safe-area-inset-top,0px) + 16px);left:50%;transform:translateX(-50%);z-index:8000;display:flex;flex-direction:column;gap:8px;align-items:center;pointer-events:none;width:max-content;max-width:92vw}
-.r-notif{pointer-events:auto;cursor:pointer;min-width:240px;max-width:92vw;box-sizing:border-box;padding:12px 20px;border-radius:20px;border:1px solid var(--line);background:var(--sidebar-bg);-webkit-backdrop-filter:blur(30px) saturate(180%);backdrop-filter:blur(30px) saturate(180%);box-shadow:var(--shadow);opacity:0;transform:translateY(-14px) scale(.98);transition:opacity .3s var(--ease-out),transform .3s var(--ease-out)}
+.r-notif{pointer-events:auto;cursor:pointer;min-width:240px;max-width:92vw;box-sizing:border-box;padding:12px 18px;border-radius:12px;border:1px solid var(--line-strong);background:var(--sidebar-bg);box-shadow:var(--shadow);opacity:0;transform:translateY(-12px);transition:opacity .3s var(--ease-out),transform .3s var(--ease-out)}
 .r-notif.show{opacity:1;transform:none}
-.r-notif-t{font-size:14px;font-weight:600;letter-spacing:-.01em}
-.r-notif-s{font-size:13px;color:var(--text-2);margin-top:2px;overflow-wrap:anywhere}
-body.layout-compact #games-section .games-container{grid-template-columns:repeat(auto-fill,minmax(min(100%,140px),1fr));gap:8px}
-body.layout-compact #games-section .game-card{padding:12px;min-height:56px}
+.r-notif-t{font-size:13px;font-weight:600}
+.r-notif-s{font-size:12px;color:var(--text-2);margin-top:2px;overflow-wrap:anywhere}
+body.layout-compact #games-section .games-container{grid-template-columns:repeat(auto-fill,minmax(min(100%,130px),1fr));gap:8px}
+body.layout-compact #games-section .game-card{padding:10px;min-height:56px}
 body.layout-neon #games-section .game-card{border-color:var(--accent-ia);box-shadow:0 0 0 1px var(--accent-ia),0 0 18px -4px var(--accent-ia)}
-body.layout-big #games-section .games-container{grid-template-columns:repeat(auto-fill,minmax(min(100%,300px),1fr))}
-body.layout-big #games-section .game-card{min-height:150px;padding:26px 22px}
-body.layout-round #games-section .game-card{border-radius:28px}
+body.layout-big #games-section .games-container{grid-template-columns:repeat(auto-fill,minmax(min(100%,280px),1fr))}
+body.layout-big #games-section .game-card{min-height:140px;padding:24px 20px}
+body.layout-round #games-section .game-card{border-radius:26px}
 body.layout-glass #games-section .game-card{background:rgba(128,128,128,.14);-webkit-backdrop-filter:blur(10px);backdrop-filter:blur(10px)}
-@media (prefers-reduced-motion:reduce){.r-fill{animation:none}.r-notif{transform:none}}
+@media (prefers-reduced-motion:reduce){.r-fill,.r-card{animation:none}.r-notif{transform:none}}
 `;
     document.head.appendChild(style);
 
     /* ---------- Sidebar y secciones ---------- */
-    const side = $('sidebar');
-    const logoutItem = side.lastElementChild;
+    const nav = $('nav');
+    const logoutItem = $('nav-exit');
     function addSide(id, label) {
         const d = el('div', 'sidebar-item', label);
         d.id = 'btn-' + id;
         d.onclick = () => showSection(id);
-        side.insertBefore(d, logoutItem);
+        nav.insertBefore(d, logoutItem);
     }
     function addSection(id, title) {
         const s = el('section', 'section');
@@ -219,7 +220,7 @@ body.layout-glass #games-section .game-card{background:rgba(128,128,128,.14);-we
             const p = Math.min(q.progress, q.target);
             const row = el('div', 'r-row');
             row.append(el('span', 'r-sub', q.metric === 'seconds' ? fmt(p) + ' / ' + fmt(q.target) : p + ' / ' + q.target + ' juegos'));
-            const b = el('button', 'hud-btn', q.claimed ? 'Reclamada ✓' : done ? 'Reclamar' : 'En curso');
+            const b = el('button', 'hud-btn' + (done && !q.claimed ? ' primary' : ''), q.claimed ? 'Reclamada ✓' : done ? 'Reclamar' : 'En curso');
             b.disabled = q.claimed || !done;
             b.onclick = () => claim(q);
             row.append(b);
@@ -251,7 +252,7 @@ body.layout-glass #games-section .game-card{background:rgba(128,128,128,.14);-we
             row.append(el('span', 'r-reward', i.owned ? 'Comprado' : i.price + ' 🪙'));
             let b;
             if (!i.owned) {
-                b = el('button', 'hud-btn', 'Comprar');
+                b = el('button', 'hud-btn primary', 'Comprar');
                 b.disabled = state.coins < i.price;
                 b.onclick = () => buy(i);
             } else if (i.kind === 'early_access') {
